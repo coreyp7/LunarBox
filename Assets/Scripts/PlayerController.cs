@@ -17,16 +17,15 @@ public class PlayerController : MonoBehaviour
 
     private bool jumpBtnPressed;
 
-    private bool isGrounded;
+    public bool isGrounded;
     public Transform feetPos;
     public float checkRadius;
     public LayerMask whatIsGround;
 
-    private float jumpTimeCounter;
-    [SerializeField]
-    private float jumpTime;
+    public bool jumping;
 
-    private bool isJumping;
+    public float jumpTime;
+    public float jumpTimeLimit;
 
     private void Awake()
     {
@@ -37,10 +36,9 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        jumpBtnPressed = false;
-        isJumping = false;
 
-    }
+
+    }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
     // Update is called once per frame
     void Update()
@@ -55,22 +53,42 @@ public class PlayerController : MonoBehaviour
 
         if(isGrounded && Input.GetKeyDown(KeyCode.P))
         {
+            Debug.Log("ENTER 1");
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            isJumping=true;
-            jumpTimeCounter = jumpTime;
+            jumping = true;
+            // set jumpTimeLimit to timestamp (like 0.3 into the future or something)
+            jumpTimeLimit = Time.time + 0.3f;
+            jumpTime = Time.time;
         }
 
-        if(Input.GetKey(KeyCode.P) && isJumping){
-
-            if(jumpTimeCounter > 0)
-            {
-                rb.velocity = Vector2.up * jumpForce;
-                jumpTimeCounter -= Time.deltaTime;
-            } else
-            {
-                isJumping = false;
-            }
+        if (jumping && Input.GetKey(KeyCode.P))
+        {
+            jumpTime += Time.deltaTime;
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
+        else if((jumping && Input.GetKeyUp(KeyCode.P)) || (jumpTime > jumpTimeLimit) ){ // when the jump button is released
+            //TODO: also if the jump time limit has been passed, execute this.
+            jumping = false;
+        }
+        // if p is being held down and player is not grounded
+        // if still before jumptimer
+        //      then continue increasing jump velocity
+        // else:
+        //      then ignore
+
+        //if(!isGrounded && Input.GetKey(KeyCode.P) && jumping)
+        //{
+        //    // if jumpTimeLimit is above 0 then increase velocity still.
+        //    if(jumpTime < jumpTimeLimit)
+        //    {
+        //        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        //        Debug.Log("ENTER 2");
+        //    } else
+        //    {
+        //        // the time of the jump is gone, turn off jumping
+        //        jumping = false;
+        //    }
+        //}
 
 
     }
