@@ -17,6 +17,11 @@ public class PlayerController : MonoBehaviour
 
     private bool jumpBtnPressed;
 
+    private bool isGrounded;
+    public Transform feetPos;
+    public float checkRadius;
+    public LayerMask whatIsGround;
+
 
 
     private void Awake()
@@ -34,11 +39,18 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        //verticalInput = Input.GetAxis("Vertical");
 
-        jumpBtnPressed = Input.GetKeyDown(KeyCode.P);
-        jumpHandling();
+        //jumpBtnPressed = Input.GetKeyDown(KeyCode.P);
+        //jumpHandling();
+
+        isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+
+        if(isGrounded && Input.GetKeyDown(KeyCode.P))
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+        }
     }
 
     void FixedUpdate()
