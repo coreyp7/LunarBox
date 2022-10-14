@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D rigidBody;
+    private Rigidbody2D rb;
 
     [SerializeField]
     private float moveSpeed;
 
+    [SerializeField]
+    private float jumpForce;
+
+    private float horizontalInput;
+    private float verticalInput;
+
     private void Awake()
     {
-        rigidBody = transform.GetComponent<Rigidbody2D>();
+        rb = transform.GetComponent<Rigidbody2D>();
     }
 
 
@@ -24,28 +30,35 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        horizontalInput = Input.GetAxis("Horizontal");
+        verticalInput = Input.GetAxis("Vertical");
         
     }
 
     void FixedUpdate()
     {
-        float currentInputHorizontal = Input.GetAxis("Horizontal");
-        float currentInputVertical = Input.GetAxis("Vertical");
-        Debug.Log("H:" + currentInputHorizontal + ", V:" + currentInputVertical);
+        // Horizontal movement first:
 
         // move left or right depending on input.
-        if(currentInputHorizontal > 0)
-        {
-            //rigidBody.velocity = new Vector2(currentInputHorizontal * moveSpeed, rigidBody.velocity.y);
-            rigidBody.velocity = new Vector2(moveSpeed, rigidBody.velocity.y);
-        } else if (currentInputHorizontal < 0)
-        {
-            //rigidBody.velocity = new Vector2(currentInputHorizontal * moveSpeed, rigidBody.velocity.y);
-            rigidBody.velocity = new Vector2(-moveSpeed, rigidBody.velocity.y);
+        horizontalMovement(this.horizontalInput);
+    }
 
-        } else
+    private void horizontalMovement(float currentInput)
+    {
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        //Doing this because without it there's some weirdness with neutral jumping
+        //   and this sets the direction, fixing that.
+            
+
+        if (currentInput != 0) //on ground handling starts here (alot easier)
         {
-            rigidBody.velocity = new Vector2(0f, rigidBody.velocity.y);
+            rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
         }
+        else
+        {
+            rb.velocity = new Vector2(0f, rb.velocity.y);
+        }
+        
+
     }
 }
