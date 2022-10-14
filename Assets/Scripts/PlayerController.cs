@@ -15,6 +15,10 @@ public class PlayerController : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
 
+    private bool jumpBtnPressed;
+
+
+
     private void Awake()
     {
         rb = transform.GetComponent<Rigidbody2D>();
@@ -24,7 +28,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        jumpBtnPressed = false;
     }
 
     // Update is called once per frame
@@ -32,7 +36,9 @@ public class PlayerController : MonoBehaviour
     {
         horizontalInput = Input.GetAxis("Horizontal");
         verticalInput = Input.GetAxis("Vertical");
-        
+
+        jumpBtnPressed = Input.GetKeyDown(KeyCode.P);
+        jumpHandling();
     }
 
     void FixedUpdate()
@@ -40,17 +46,19 @@ public class PlayerController : MonoBehaviour
         // Horizontal movement first:
 
         // move left or right depending on input.
-        horizontalMovement(this.horizontalInput);
+        horizontalMovement();
+
+        // Vertical movement next:
+        //jumpHandling();
     }
 
-    private void horizontalMovement(float currentInput)
-    {
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        //Doing this because without it there's some weirdness with neutral jumping
-        //   and this sets the direction, fixing that.
-            
+    /**
+     * Will apply forces onto rigidbody depending on the input from the user.
+    */
 
-        if (currentInput != 0) //on ground handling starts here (alot easier)
+    private void horizontalMovement()
+    {
+        if (this.horizontalInput != 0) //on ground handling starts here (alot easier)
         {
             rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
         }
@@ -58,7 +66,15 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector2(0f, rb.velocity.y);
         }
-        
+    }
 
+    private void jumpHandling()
+    {
+        if (this.jumpBtnPressed)
+        {
+
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+
+        }
     }
 }
