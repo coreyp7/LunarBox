@@ -22,7 +22,11 @@ public class PlayerController : MonoBehaviour
     public float checkRadius;
     public LayerMask whatIsGround;
 
+    private float jumpTimeCounter;
+    [SerializeField]
+    private float jumpTime;
 
+    private bool isJumping;
 
     private void Awake()
     {
@@ -34,6 +38,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         jumpBtnPressed = false;
+        isJumping = false;
+
     }
 
     // Update is called once per frame
@@ -50,7 +56,23 @@ public class PlayerController : MonoBehaviour
         if(isGrounded && Input.GetKeyDown(KeyCode.P))
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            isJumping=true;
+            jumpTimeCounter = jumpTime;
         }
+
+        if(Input.GetKey(KeyCode.P) && isJumping){
+
+            if(jumpTimeCounter > 0)
+            {
+                rb.velocity = Vector2.up * jumpForce;
+                jumpTimeCounter -= Time.deltaTime;
+            } else
+            {
+                isJumping = false;
+            }
+        }
+
+
     }
 
     void FixedUpdate()
