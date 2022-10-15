@@ -24,8 +24,12 @@ public class PlayerController : MonoBehaviour
 
     public bool jumping;
 
-    public float jumpTime;
-    public float jumpTimeLimit;
+    public float holdJumpBtnLength; // default rn is 0.3f
+    
+    private float jumpTime;
+    
+    
+    private float jumpTimeLimit;
 
     private void Awake()
     {
@@ -57,7 +61,7 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             jumping = true;
             // set jumpTimeLimit to timestamp (like 0.3 into the future or something)
-            jumpTimeLimit = Time.time + 0.3f;
+            jumpTimeLimit = Time.time + holdJumpBtnLength;
             jumpTime = Time.time;
         }
 
@@ -89,6 +93,11 @@ public class PlayerController : MonoBehaviour
             jumpTime += Time.deltaTime;
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
+
+        //if(!jumping && rb.velocity.y < 0f)
+        //{
+        //    rb.velocity = new Vector2(rb.velocity.x, -1f * jumpForce);
+        //}
 
         // if p is being held down and player is not grounded
         // if still before jumptimer
