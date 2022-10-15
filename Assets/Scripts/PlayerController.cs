@@ -94,31 +94,15 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
 
-        //if(!jumping && rb.velocity.y < 0f)
-        //{
-        //    rb.velocity = new Vector2(rb.velocity.x, -1f * jumpForce);
-        //}
-
-        // if p is being held down and player is not grounded
-        // if still before jumptimer
-        //      then continue increasing jump velocity
-        // else:
-        //      then ignore
-
-        //if(!isGrounded && Input.GetKey(KeyCode.P) && jumping)
-        //{
-        //    // if jumpTimeLimit is above 0 then increase velocity still.
-        //    if(jumpTime < jumpTimeLimit)
-        //    {
-        //        rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-        //        Debug.Log("ENTER 2");
-        //    } else
-        //    {
-        //        // the time of the jump is gone, turn off jumping
-        //        jumping = false;
-        //    }
-        //}
-
+        // Make jumping feel waaaayyyyyy better.
+        //TODO: look at video this is from and look for comment about optimization nd implement.
+        if(!jumping && rb.velocity.y < 0)
+        {
+            rb.velocity += Vector2.up * Physics2D.gravity.y * 1.5f * Time.deltaTime;
+        } else if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.P))
+        {
+            rb.velocity += Vector2.up * Physics2D.gravity.y * 1f * Time.deltaTime;
+        }
 
     }
 
