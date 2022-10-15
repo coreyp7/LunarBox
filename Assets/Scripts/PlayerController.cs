@@ -61,15 +61,35 @@ public class PlayerController : MonoBehaviour
             jumpTime = Time.time;
         }
 
-        if (jumping && Input.GetKey(KeyCode.P))
+        // If they are holding jump btn & we haven't hit the jumpTimeLimit, then continue adding velocity.
+        // Otherwise, turn off jumping mode.
+
+        // idea: check before all of this if key is let go (KeyUp) && jumping, then turn off jumping immediately.
+        if(jumping && Input.GetKeyUp(KeyCode.P))
         {
+            jumping = false;
+        }
+        else if (jumping && (jumpTime > jumpTimeLimit) ){
+            /** If either:
+             * 1. the player lets go of the jump btn
+             * or
+             * 2. the jumpTimeLimit is reached
+             * ...then turn off jumping.
+             */
+            /*
+             * TODO: don't allow the user to jump forever. Set a limit to the height of the jump.
+             * Then mess with the quickness of the player's gravity when falling.
+             */
+
+            jumping = false;
+        }
+        else if (jumping && Input.GetKey(KeyCode.P) && (jumpTime < jumpTimeLimit)) // last part is extra, could remove
+        {
+            Debug.Log("jumping && Input.GetKey(KeyCode.P)");
             jumpTime += Time.deltaTime;
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
-        else if((jumping && Input.GetKeyUp(KeyCode.P)) || (jumpTime > jumpTimeLimit) ){ // when the jump button is released
-            //TODO: also if the jump time limit has been passed, execute this.
-            jumping = false;
-        }
+
         // if p is being held down and player is not grounded
         // if still before jumptimer
         //      then continue increasing jump velocity

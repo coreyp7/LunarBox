@@ -155,14 +155,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddab098a4d4440042b29923c4df9b7f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
-  jumpForce: 8
+  moveSpeed: 7
+  jumpForce: 6
+  isGrounded: 0
   feetPos: {fileID: 1433181741}
-  checkRadius: 0.6
+  checkRadius: 0.14
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
-  jumpTime: 0.35
+  jumping: 0
+  jumpTime: 0.13
+  jumpTimeLimit: 0
 --- !u!212 &281285747
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -246,7 +249,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 3.84
+  m_GravityScale: 2.85
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -497,7 +500,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1433181740}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.01, y: -0.531, z: 0.016508777}
+  m_LocalPosition: {x: 0.01, y: -0.48, z: 0.016508777}
   m_LocalScale: {x: 1.0642463, y: 0.4992244, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -538,12 +541,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 6
   jumpForce: 6
+  isGrounded: 0
   feetPos: {fileID: 0}
   checkRadius: 0
   whatIsGround:
     serializedVersion: 2
     m_Bits: 0
+  jumping: 0
   jumpTime: 0
+  jumpTimeLimit: 0
 --- !u!50 &1724996301
 Rigidbody2D:
   serializedVersion: 4
@@ -831,12 +837,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 6
   jumpForce: 10
+  isGrounded: 0
   feetPos: {fileID: 1433181741}
   checkRadius: 0.3
   whatIsGround:
     serializedVersion: 2
     m_Bits: 64
+  jumping: 0
   jumpTime: 0
+  jumpTimeLimit: 0
 --- !u!1 &2033465235
 GameObject:
   m_ObjectHideFlags: 0
