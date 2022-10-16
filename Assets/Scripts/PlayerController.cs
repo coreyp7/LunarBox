@@ -69,22 +69,14 @@ public class PlayerController : MonoBehaviour
         // Otherwise, turn off jumping mode.
 
         // idea: check before all of this if key is let go (KeyUp) && jumping, then turn off jumping immediately.
-        if(jumping && Input.GetKeyUp(KeyCode.P))
+
+        if(jumping && Input.GetKeyUp(KeyCode.P)) // if jumping & user releases jump button.
         {
             jumping = false;
+            jumpTime = jumpTimeLimit + 1f;
         }
-        else if (jumping && (jumpTime > jumpTimeLimit) ){
-            /** If either:
-             * 1. the player lets go of the jump btn
-             * or
-             * 2. the jumpTimeLimit is reached
-             * ...then turn off jumping.
-             */
-            /*
-             * TODO: don't allow the user to jump forever. Set a limit to the height of the jump.
-             * Then mess with the quickness of the player's gravity when falling.
-             */
-
+        else if (jumping && (jumpTime > jumpTimeLimit)) // if player is jumping & has exceeded the jumpTimeLimit
+        {
             jumping = false;
         }
         else if (jumping && Input.GetKey(KeyCode.P) && (jumpTime < jumpTimeLimit)) // last part is extra, could remove
