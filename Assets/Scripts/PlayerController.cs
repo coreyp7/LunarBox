@@ -4,7 +4,14 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    /**
+     * Gravity scale: 4.04
+     * Angular drag: 0.05
+     * Linear drag: 0
+     * Mass: 1
+     */
     private Rigidbody2D rb;
+
 
     [SerializeField]
     private float moveSpeed;
@@ -19,12 +26,16 @@ public class PlayerController : MonoBehaviour
 
     public bool isGrounded;
     public Transform feetPos;
+
+    // should be 0.14
     public float checkRadius;
+
     public LayerMask whatIsGround;
 
     public bool jumping;
 
-    public float holdJumpBtnLength; // default rn is 0.3f
+    // should be 0.12
+    public float holdJumpBtnLength;
     
     private float jumpTime;
     
