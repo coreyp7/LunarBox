@@ -13,9 +13,11 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
 
 
+    // default: 7
     [SerializeField]
     private float moveSpeed;
 
+    // default: 8
     [SerializeField]
     private float jumpForce;
 
@@ -64,11 +66,11 @@ public class PlayerController : MonoBehaviour
         //jumpBtnPressed = Input.GetKeyDown(KeyCode.P);
         //jumpHandling();
 
-        isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+        //isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
 
         if(isGrounded && Input.GetKeyDown(KeyCode.P))
         {
-            Debug.Log("ENTER 1");
+            //Debug.Log("ENTER 1");
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             jumping = true;
             // set jumpTimeLimit to timestamp (like 0.3 into the future or something)
@@ -92,7 +94,7 @@ public class PlayerController : MonoBehaviour
         }
         else if (jumping && Input.GetKey(KeyCode.P) && (jumpTime < jumpTimeLimit)) // last part is extra, could remove
         {
-            Debug.Log("jumping && Input.GetKey(KeyCode.P)");
+            //Debug.Log("jumping && Input.GetKey(KeyCode.P)");
             jumpTime += Time.deltaTime;
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
         }
@@ -112,7 +114,8 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         // Horizontal movement first:
-
+        isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+        
         // move left or right depending on input.
         horizontalMovement();
 
@@ -144,5 +147,12 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
 
         }
+    }
+
+    void onDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(feetPos.position, checkRadius);
+        
     }
 }
