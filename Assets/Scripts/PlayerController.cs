@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,7 +54,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        jumping = false;
 
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
@@ -67,8 +68,8 @@ public class PlayerController : MonoBehaviour
         //jumpHandling();
 
         //isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-
-        if(isGrounded && Input.GetKeyDown(KeyCode.P))
+        //if (isGrounded && Input.GetKeyDown(KeyCode.P))
+        if (!jumping && isGrounded && Input.GetKeyDown(KeyCode.P))
         {
             //Debug.Log("ENTER 1");
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
@@ -83,20 +84,34 @@ public class PlayerController : MonoBehaviour
 
         // idea: check before all of this if key is let go (KeyUp) && jumping, then turn off jumping immediately.
 
-        if(jumping && Input.GetKeyUp(KeyCode.P)) // if jumping & user releases jump button.
+
+        if (!jumping && isGrounded && Input.GetKeyDown(KeyCode.P))
+        {
+            //Debug.Log("ENTER 1");
+            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            jumping = true;
+            // set jumpTimeLimit to timestamp (like 0.3 into the future or something)
+            jumpTimeLimit = Time.time + holdJumpBtnLength;
+            jumpTime = Time.time;
+            Debug.Log("Jumping 1");
+        }
+        else if (jumping && Input.GetKeyUp(KeyCode.P)) // if jumping & user releases jump button.
         {
             jumping = false;
             jumpTime = jumpTimeLimit + 1f;
+            Debug.Log("Jumping 2");
         }
         else if (jumping && (jumpTime > jumpTimeLimit)) // if player is jumping & has exceeded the jumpTimeLimit
         {
             jumping = false;
+            Debug.Log("Jumping 3");
         }
         else if (jumping && Input.GetKey(KeyCode.P) && (jumpTime < jumpTimeLimit)) // last part is extra, could remove
         {
             //Debug.Log("jumping && Input.GetKey(KeyCode.P)");
             jumpTime += Time.deltaTime;
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+            Debug.Log("Jumping 4");
         }
 
         // Make jumping feel waaaayyyyyy better.
@@ -114,8 +129,9 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         // Horizontal movement first:
-        isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-        
+        //isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+        isGrounded = Physics2D.OverlapBox(feetPos.position, new Vector2(.3f, .3f), 0, whatIsGround);
+
         // move left or right depending on input.
         horizontalMovement();
 
@@ -149,10 +165,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void onDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawSphere(feetPos.position, checkRadius);
-        
+        //Gizmos.color = Color.red;
+        //Gizmos.DrawLine(transform.position, new Vector3(0, -1));
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        //Gizmos.DrawLine(transform.position, transform.position - new Vector3(0f, 1f));
+        //Gizmos.DrawCube(feetPos.position, new Vector2(.5f, .5f), 0);
     }
 }
