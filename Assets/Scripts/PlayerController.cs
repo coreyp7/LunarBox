@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     public LayerMask whatIsGround;
 
-    public bool jumping;
+    public bool isJumping;
 
     // should be 0.12
     public float holdJumpBtnLength;
@@ -44,6 +44,12 @@ public class PlayerController : MonoBehaviour
     
     
     private float jumpTimeLimit;
+
+    [SerializeField]
+    private Boolean inAir;
+
+
+    private float jumpLockoutTime;
 
     private void Awake()
     {
@@ -54,8 +60,9 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        jumping = false;
-
+        isJumping = false;
+        inAir = false;
+        jumpLockoutTime = -1;
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
     // Update is called once per frame
@@ -69,54 +76,89 @@ public class PlayerController : MonoBehaviour
 
         //isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
         //if (isGrounded && Input.GetKeyDown(KeyCode.P))
-        if (!jumping && isGrounded && Input.GetKeyDown(KeyCode.P))
+        /*
+        if (!isJumping && isGrounded && Input.GetKeyDown(KeyCode.P))
         {
             //Debug.Log("ENTER 1");
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            jumping = true;
+            isJumping = true;
             // set jumpTimeLimit to timestamp (like 0.3 into the future or something)
             jumpTimeLimit = Time.time + holdJumpBtnLength;
             jumpTime = Time.time;
         }
+        */
 
         // If they are holding jump btn & we haven't hit the jumpTimeLimit, then continue adding velocity.
         // Otherwise, turn off jumping mode.
 
         // idea: check before all of this if key is let go (KeyUp) && jumping, then turn off jumping immediately.
+        if(Time.time > jumpLockoutTime || jumpLockoutTime == -1)
+        {
+            if (Input.GetKeyDown(KeyCode.P) && isGrounded) // if they're on the ground and press the jump button
+            {
+                isJumping = true;
+                inAir = true;
 
+                // To negate double jump thing: turn off jumping for a small moment
+                jumpLockoutTime = Time.time + 0.01f;
 
-        if (!jumping && isGrounded && Input.GetKeyDown(KeyCode.P))
-        {
-            //Debug.Log("ENTER 1");
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            jumping = true;
-            // set jumpTimeLimit to timestamp (like 0.3 into the future or something)
-            jumpTimeLimit = Time.time + holdJumpBtnLength;
-            jumpTime = Time.time;
-            Debug.Log("Jumping 1");
-        }
-        else if (jumping && Input.GetKeyUp(KeyCode.P)) // if jumping & user releases jump button.
-        {
-            jumping = false;
-            jumpTime = jumpTimeLimit + 1f;
-            Debug.Log("Jumping 2");
-        }
-        else if (jumping && (jumpTime > jumpTimeLimit)) // if player is jumping & has exceeded the jumpTimeLimit
-        {
-            jumping = false;
-            Debug.Log("Jumping 3");
-        }
-        else if (jumping && Input.GetKey(KeyCode.P) && (jumpTime < jumpTimeLimit)) // last part is extra, could remove
-        {
-            //Debug.Log("jumping && Input.GetKey(KeyCode.P)");
-            jumpTime += Time.deltaTime;
-            rb.velocity = new Vector2(rb.velocity.x, jumpForce);
-            Debug.Log("Jumping 4");
+                jumpTimeLimit = Time.time + holdJumpBtnLength;
+
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce); // jump
+                Debug.Log("1");
+
+            }
+            else if (Input.GetKey(KeyCode.P) && isJumping && (jumpTimeLimit > Time.time)) // in
+            {
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce); // continue jumping
+                Debug.Log("2");
+            }
+            else if (Input.GetKeyUp(KeyCode.P) && isJumping)
+            {
+                isJumping = false;
+                Debug.Log("3");
+            }
         }
 
-        // Make jumping feel waaaayyyyyy better.
+        /*
+        if (!jumping)
+        {
+            if (isGrounded && Input.GetKeyDown(KeyCode.P))
+            {
+                //Debug.Log("ENTER 1");
+                jumping = true;
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                // set jumpTimeLimit to timestamp (like 0.3 into the future or something)
+                jumpTimeLimit = Time.time + holdJumpBtnLength;
+                jumpTime = Time.time;
+                Debug.Log("Jumping 1");
+            }
+        } else
+        {
+            if (jumping && Input.GetKeyUp(KeyCode.P)) // if jumping & user releases jump button.
+            {
+                jumping = false;
+                jumpTime = jumpTimeLimit + 1f;
+                Debug.Log("Jumping 2");
+            }
+            else if (jumping && (jumpTime > jumpTimeLimit)) // if player is jumping & has exceeded the jumpTimeLimit
+            {
+                jumping = false;
+                Debug.Log("Jumping 3");
+            }
+            else if (jumping && Input.GetKey(KeyCode.P) && (jumpTime < jumpTimeLimit)) // last part is extra, could remove
+            {
+                //Debug.Log("jumping && Input.GetKey(KeyCode.P)");
+                jumpTime += Time.deltaTime;
+                rb.velocity = new Vector2(rb.velocity.x, jumpForce);
+                Debug.Log("Jumping 4");
+            }
+        }
+        */
+
+        // Make jumping feel waaaayyyyyy better. Only makes falling faster.
         //TODO: look at video this is from and look for comment about optimization nd implement.
-        if(!jumping && rb.velocity.y < 0)
+        if(!isJumping && rb.velocity.y < 0)
         {
             rb.velocity += Vector2.up * Physics2D.gravity.y * 1.5f * Time.deltaTime;
         } else if (rb.velocity.y > 0 && !Input.GetKey(KeyCode.P))
@@ -129,8 +171,9 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         // Horizontal movement first:
-        //isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
-        isGrounded = Physics2D.OverlapBox(feetPos.position, new Vector2(.3f, .3f), 0, whatIsGround);
+        isGrounded = Physics2D.OverlapCircle(feetPos.position, checkRadius, whatIsGround);
+        if(isGrounded) inAir = false;
+        //isGrounded = Physics2D.OverlapBox(feetPos.position, new Vector2(.3f, .3f), 0, whatIsGround);
 
         // move left or right depending on input.
         horizontalMovement();
