@@ -105,18 +105,18 @@ public class PlayerController : MonoBehaviour
                 jumpTimeLimit = Time.time + holdJumpBtnLength;
 
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce); // jump
-                Debug.Log("1");
+                //Debug.Log("1");
 
             }
             else if (Input.GetKey(KeyCode.P) && isJumping && (jumpTimeLimit > Time.time)) // in
             {
                 rb.velocity = new Vector2(rb.velocity.x, jumpForce); // continue jumping
-                Debug.Log("2");
+                //Debug.Log("2");
             }
             else if (Input.GetKeyUp(KeyCode.P) && isJumping)
             {
                 isJumping = false;
-                Debug.Log("3");
+                //Debug.Log("3");
             }
         }
 
