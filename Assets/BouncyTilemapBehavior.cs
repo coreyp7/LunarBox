@@ -19,8 +19,52 @@ public class BouncyTilemapBehavior : MonoBehaviour
     {
         
     }
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Player")
+        {
+            Debug.Log("Hit bounce.");
+            Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+
+            //Vector2 thisPosition = new Vector2(this.transform.position.x, this.transform.position.y);
+            //Vector2 relativePosition = playerRb.position - thisPosition;
+            //Debug.Log(relativePosition);
+
+            playerRb.velocity = new Vector2(playerRb.velocity.x, Mathf.Abs(playerRb.velocity.y) + bounciness);
+            
+            /*
+            float newVelocityX = 0f;
+            float newVelocityY = 0f;
+            if(playerRb.velocity.x > 0)
+            {
+                newVelocityX += bounciness;
+            } else
+            {
+                newVelocityX -= bounciness;
+            }
+
+            if (playerRb.velocity.y > 0)
+            {
+                newVelocityY += bounciness;
+            }
+            else
+            {
+                newVelocityY -= bounciness;
+            }
+            */
+
+            //playerRb.velocity = new Vector2(-playerRb.velocity.x + bounciness, -playerRb.velocity.y + bounciness);
+            //playerRb.velocity = new Vector2(newVelocityX, newVelocityY);
+        }
+        else
+        {
+            Debug.Log("Something hit bounce, but not player...");
+        }
+    }
+    
+    /**
+    private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
@@ -33,5 +77,6 @@ public class BouncyTilemapBehavior : MonoBehaviour
             Debug.Log("Something hit bounce, but not player...");
         }
     }
+    */
 
 }
