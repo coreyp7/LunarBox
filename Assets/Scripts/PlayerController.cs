@@ -51,6 +51,8 @@ public class PlayerController : MonoBehaviour
 
     private float jumpLockoutTime;
 
+    private Boolean holdingJumpBtn;
+
     private void Awake()
     {
         rb = transform.GetComponent<Rigidbody2D>();
@@ -69,6 +71,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
+        holdingJumpBtn = Input.GetKey(KeyCode.P);
         //verticalInput = Input.GetAxis("Vertical");
 
         //jumpBtnPressed = Input.GetKeyDown(KeyCode.P);
@@ -219,5 +222,10 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.red;
         //Gizmos.DrawLine(transform.position, transform.position - new Vector3(0f, 1f));
         //Gizmos.DrawCube(feetPos.position, new Vector2(.5f, .5f), 0);
+    }
+
+    public Boolean isHoldingJump()
+    {
+        return holdingJumpBtn;
     }
 }

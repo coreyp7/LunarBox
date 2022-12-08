@@ -6,7 +6,13 @@ using UnityEngine;
 public class BouncyTilemapBehavior : MonoBehaviour
 {
     [SerializeField]
+    private PlayerController player;
+
+    [SerializeField]
     private float bounciness;
+
+    [SerializeField]
+    private float holdingJumpIncrease;
 
     // Start is called before the first frame update
     void Start()
@@ -31,8 +37,19 @@ public class BouncyTilemapBehavior : MonoBehaviour
             //Vector2 relativePosition = playerRb.position - thisPosition;
             //Debug.Log(relativePosition);
 
-            playerRb.velocity = new Vector2(playerRb.velocity.x, Mathf.Abs(playerRb.velocity.y) + bounciness);
-            
+            //playerRb.velocity = new Vector2(playerRb.velocity.x, Mathf.Abs(playerRb.velocity.y) + bounciness);
+            //playerRb.velocity = new Vector2(playerRb.velocity.x, bounciness);
+
+            if (player.isHoldingJump())
+            {
+                Debug.Log("player is holding p");
+                playerRb.velocity = new Vector2(playerRb.velocity.x, bounciness + holdingJumpIncrease);
+
+            } else
+            {
+                playerRb.velocity = new Vector2(playerRb.velocity.x, bounciness);
+            }
+
             /*
             float newVelocityX = 0f;
             float newVelocityY = 0f;
@@ -63,7 +80,7 @@ public class BouncyTilemapBehavior : MonoBehaviour
         }
     }
     
-    /**
+    
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.gameObject.tag == "Player")
@@ -71,12 +88,13 @@ public class BouncyTilemapBehavior : MonoBehaviour
             Debug.Log("Hit bounce.");
             Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
             playerRb.velocity = new Vector2(playerRb.velocity.x, bounciness);
+            //playerRb.velocity = new Vector2(playerRb.velocity.x, Mathf.Abs(playerRb.velocity.y) + bounciness);
         }
         else
         {
-            Debug.Log("Something hit bounce, but not player...");
+            //Debug.Log("Something hit bounce, but not player...");
         }
     }
-    */
+    
 
 }
