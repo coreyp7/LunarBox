@@ -201,7 +201,19 @@ public class PlayerController : MonoBehaviour
     {
         if (this.horizontalInput != 0) //on ground handling starts here (alot easier)
         {
-            rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
+            //Debug.Log("Math.Abs(rb.velocity.x):" + Math.Abs(rb.velocity.x) + ", moveSpeed:" + moveSpeed);
+            if ((Math.Abs(rb.velocity.x) > moveSpeed + 1) && Math.Abs(rb.velocity.x) < 28) // if they're going really fast from a movement block, let them stay at that speed.
+            {
+                rb.velocity += new Vector2(moveSpeed * horizontalInput, 0f);
+                Debug.Log("Math.Abs(rb.velocity.x):" + Math.Abs(rb.velocity.x)+ ", moveSpeed:"+moveSpeed);
+            } else if(Math.Abs(rb.velocity.x) > 28)
+            {
+                rb.velocity = new Vector2(rb.velocity.x * Math.Abs(horizontalInput), rb.velocity.y);
+            }
+            else // treat normal
+            {
+                rb.velocity = new Vector2(horizontalInput * moveSpeed, rb.velocity.y);
+            }
         }
         else
         {
