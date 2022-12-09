@@ -5,17 +5,28 @@ using UnityEngine;
 
 public class BouncyTilemapBehavior : MonoBehaviour
 {
+    public enum ForceDirection
+    {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    };
+
+    [SerializeField]
+    private ForceDirection forceDirection;
+
     [SerializeField]
     private PlayerController player;
+
+    [SerializeField]
+    private Rigidbody2D playerRb;
 
     [SerializeField]
     private float bounciness;
 
     [SerializeField]
     private float holdingJumpIncrease;
-
-    [SerializeField]
-    private Vector2 forceDirection;
 
     // Start is called before the first frame update
     void Start()
@@ -33,49 +44,8 @@ public class BouncyTilemapBehavior : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            Debug.Log("Hit bounce.");
-            Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
+            applyBounceForceOnPlayer();
 
-            //Vector2 thisPosition = new Vector2(this.transform.position.x, this.transform.position.y);
-            //Vector2 relativePosition = playerRb.position - thisPosition;
-            //Debug.Log(relativePosition);
-
-            //playerRb.velocity = new Vector2(playerRb.velocity.x, Mathf.Abs(playerRb.velocity.y) + bounciness);
-            //playerRb.velocity = new Vector2(playerRb.velocity.x, bounciness);
-
-            if (player.isHoldingJump())
-            {
-                Debug.Log("player is holding p");
-                playerRb.velocity = new Vector2(playerRb.velocity.x, bounciness + holdingJumpIncrease);
-
-            } else
-            {
-                playerRb.velocity = new Vector2(playerRb.velocity.x, bounciness);
-            }
-
-            /*
-            float newVelocityX = 0f;
-            float newVelocityY = 0f;
-            if(playerRb.velocity.x > 0)
-            {
-                newVelocityX += bounciness;
-            } else
-            {
-                newVelocityX -= bounciness;
-            }
-
-            if (playerRb.velocity.y > 0)
-            {
-                newVelocityY += bounciness;
-            }
-            else
-            {
-                newVelocityY -= bounciness;
-            }
-            */
-
-            //playerRb.velocity = new Vector2(-playerRb.velocity.x + bounciness, -playerRb.velocity.y + bounciness);
-            //playerRb.velocity = new Vector2(newVelocityX, newVelocityY);
         }
         else
         {
@@ -89,13 +59,54 @@ public class BouncyTilemapBehavior : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Hit bounce.");
-            Rigidbody2D playerRb = collision.gameObject.GetComponent<Rigidbody2D>();
-            playerRb.velocity = new Vector2(playerRb.velocity.x, bounciness);
+            applyBounceForceOnPlayer();
             //playerRb.velocity = new Vector2(playerRb.velocity.x, Mathf.Abs(playerRb.velocity.y) + bounciness);
         }
         else
         {
             //Debug.Log("Something hit bounce, but not player...");
+        }
+    }
+
+    private void applyBounceForceOnPlayer()
+    {
+        switch (forceDirection)
+        {
+            case ForceDirection.UP:
+                /*
+                 * If the user is holding jump then increase the height of the bounce/force.
+                 */
+                if (player.isHoldingJump())
+                {
+                    playerRb.velocity = new Vector2(playerRb.velocity.x, bounciness + holdingJumpIncrease);
+                }
+                else
+                {
+                    playerRb.velocity = new Vector2(playerRb.velocity.x, bounciness);
+                }
+                break;
+            case ForceDirection.DOWN:
+                /*
+                 * If the user is already falling, then increasing negative y velocity makes it go
+                 * uncontrollably fast. So, if they're already falling, then ignore since the player
+                 * is already being forced down.
+                 */
+                if(playerRb.velocity.y < 0) {
+                    playerRb.velocity = new Vector2(playerRb.velocity.x, playerRb.velocity.y);
+                } else
+                {
+                    playerRb.velocity = new Vector2(playerRb.velocity.x, -bounciness + playerRb.velocity.y);
+                }
+                break;
+            case ForceDirection.LEFT:
+                playerRb.velocity = new Vector2(-bounciness, playerRb.velocity.y);
+                break;
+            case ForceDirection.RIGHT:
+                playerRb.velocity = new Vector2(bounciness, playerRb.velocity.y);
+                break;
+            default:
+                Debug.Log("DEFAULT HIT IN BouncyTilemapBehavior: " + forceDirection);
+                break;
         }
     }
     
