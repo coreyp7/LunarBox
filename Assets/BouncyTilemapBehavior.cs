@@ -44,8 +44,8 @@ public class BouncyTilemapBehavior : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
+            player.lockHorizontalInput();
             applyBounceForceOnPlayerOnTriggerEnter();
-
         }
         else
         {
@@ -101,10 +101,14 @@ public class BouncyTilemapBehavior : MonoBehaviour
             case ForceDirection.LEFT:
                 //Debug.Log("ForceDirection.LEFT");
                 //playerRb.velocity = new Vector2(-100f + playerRb.velocity.x, playerRb.velocity.y);
-                playerRb.AddForce(new Vector2(-2500f, 0f), ForceMode2D.Force);
+                //playerRb.AddForce(new Vector2(-bounciness, 0f), ForceMode2D.Force);
+                playerRb.velocity = new Vector2(-bounciness, playerRb.velocity.y);
+                player.lockHorizontalInput();
+                //player.lockHorizontalInput();
                 break;
             case ForceDirection.RIGHT:
-                playerRb.velocity = new Vector2(bounciness + playerRb.velocity.x, playerRb.velocity.y);
+                playerRb.velocity = new Vector2(bounciness, playerRb.velocity.y);
+                player.lockHorizontalInput();
                 break;
             default:
                 Debug.Log("DEFAULT HIT IN BouncyTilemapBehavior: " + forceDirection);
@@ -147,10 +151,13 @@ public class BouncyTilemapBehavior : MonoBehaviour
             case ForceDirection.LEFT:
                 //Debug.Log("ForceDirection.LEFT");
                 //playerRb.velocity = new Vector2(-100f + playerRb.velocity.x, playerRb.velocity.y);
-                playerRb.AddForce(new Vector2(-750f, 0f), ForceMode2D.Force);
+                playerRb.AddForce(new Vector2(-bounciness, 0f), ForceMode2D.Force);
+                player.lockHorizontalInput();
                 break;
             case ForceDirection.RIGHT:
-                playerRb.velocity = new Vector2(bounciness + playerRb.velocity.x, playerRb.velocity.y);
+                //playerRb.velocity = new Vector2(bounciness + playerRb.velocity.x, playerRb.velocity.y);
+                playerRb.AddForce(new Vector2(-bounciness, 0f), ForceMode2D.Force);
+                player.lockHorizontalInput();
                 break;
             default:
                 Debug.Log("DEFAULT HIT IN BouncyTilemapBehavior: " + forceDirection);

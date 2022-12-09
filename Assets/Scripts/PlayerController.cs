@@ -53,6 +53,9 @@ public class PlayerController : MonoBehaviour
 
     private Boolean holdingJumpBtn;
 
+    private Boolean horizontalInputLocked;
+    private float horizontalInputLockTimestamp;
+
     private void Awake()
     {
         rb = transform.GetComponent<Rigidbody2D>();
@@ -65,6 +68,8 @@ public class PlayerController : MonoBehaviour
         isJumping = false;
         inAir = false;
         jumpLockoutTime = -1;
+
+        horizontalInputLocked = false;
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
     // Update is called once per frame
@@ -179,7 +184,10 @@ public class PlayerController : MonoBehaviour
         //isGrounded = Physics2D.OverlapBox(feetPos.position, new Vector2(.3f, .3f), 0, whatIsGround);
 
         // move left or right depending on input.
-        horizontalMovement();
+        if(horizontalInputLockTimestamp < Time.time)
+        {
+            horizontalMovement();
+        }
 
         // Vertical movement next:
         //jumpHandling();
@@ -227,5 +235,11 @@ public class PlayerController : MonoBehaviour
     public Boolean isHoldingJump()
     {
         return holdingJumpBtn;
+    }
+
+    public void lockHorizontalInput()
+    {
+        //horizontalInputLocked = true;
+        horizontalInputLockTimestamp = Time.time + 0.10f;
     }
 }
