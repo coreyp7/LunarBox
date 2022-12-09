@@ -14,6 +14,9 @@ public class BouncyTilemapBehavior : MonoBehaviour
     [SerializeField]
     private float holdingJumpIncrease;
 
+    [SerializeField]
+    private Vector2 forceDirection;
+
     // Start is called before the first frame update
     void Start()
     {
