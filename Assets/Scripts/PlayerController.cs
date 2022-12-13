@@ -207,8 +207,15 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("Math.Abs(rb.velocity.x):" + Math.Abs(rb.velocity.x) + ", moveSpeed:" + moveSpeed);
             if ((Math.Abs(rb.velocity.x) > moveSpeed + 2) && Math.Abs(rb.velocity.x) < maxSpeed) // if they're going really fast from a movement block, let them stay at that speed.
             {
-                rb.velocity += new Vector2(moveSpeed * horizontalInput, 0f);
-                Debug.Log("Math.Abs(rb.velocity.x):" + Math.Abs(rb.velocity.x)+ ", moveSpeed:"+moveSpeed);
+                if(Math.Abs(horizontalInput) > 0)
+                {
+                    rb.velocity += new Vector2(1f, 0f);
+                } else
+                {
+                    rb.velocity = new Vector2(0, rb.velocity.y);
+                }
+                //Debug.Log("Math.Abs(rb.velocity.x):" + Math.Abs(rb.velocity.x)+ ", moveSpeed:"+moveSpeed);
+                Debug.Log(rb.velocity);
             } 
             else if(Math.Abs(rb.velocity.x) >= maxSpeed) // For handling user input when they are traveling at/passed max speed.
             {

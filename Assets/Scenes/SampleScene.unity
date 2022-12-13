@@ -166,7 +166,7 @@ MonoBehaviour:
   isJumping: 0
   holdJumpBtnLength: 0.12
   inAir: 0
-  maxSpeed: 16
+  maxSpeed: 11
 --- !u!50 &116131995
 Rigidbody2D:
   serializedVersion: 4
