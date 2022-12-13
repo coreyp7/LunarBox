@@ -209,7 +209,10 @@ public class PlayerController : MonoBehaviour
             {
                 if(Math.Abs(horizontalInput) > 0)
                 {
-                    rb.velocity += new Vector2(1f, 0f);
+                    if (rb.velocity.x > 0)
+                        rb.velocity += new Vector2(1f, 0f);
+                    else
+                        rb.velocity += new Vector2(-1f, 0f);
                 } else
                 {
                     rb.velocity = new Vector2(0, rb.velocity.y);
