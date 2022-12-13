@@ -56,6 +56,9 @@ public class PlayerController : MonoBehaviour
     private Boolean horizontalInputLocked;
     private float horizontalInputLockTimestamp;
 
+    [SerializeField]
+    public float maxSpeed;
+
     private void Awake()
     {
         rb = transform.GetComponent<Rigidbody2D>();
@@ -202,13 +205,25 @@ public class PlayerController : MonoBehaviour
         if (this.horizontalInput != 0) //on ground handling starts here (alot easier)
         {
             //Debug.Log("Math.Abs(rb.velocity.x):" + Math.Abs(rb.velocity.x) + ", moveSpeed:" + moveSpeed);
-            if ((Math.Abs(rb.velocity.x) > moveSpeed + 1) && Math.Abs(rb.velocity.x) < 28) // if they're going really fast from a movement block, let them stay at that speed.
+            if ((Math.Abs(rb.velocity.x) > moveSpeed + 2) && Math.Abs(rb.velocity.x) < maxSpeed) // if they're going really fast from a movement block, let them stay at that speed.
             {
                 rb.velocity += new Vector2(moveSpeed * horizontalInput, 0f);
                 Debug.Log("Math.Abs(rb.velocity.x):" + Math.Abs(rb.velocity.x)+ ", moveSpeed:"+moveSpeed);
-            } else if(Math.Abs(rb.velocity.x) > 28)
+            } 
+            else if(Math.Abs(rb.velocity.x) >= maxSpeed) // For handling user input when they are traveling at/passed max speed.
             {
-                rb.velocity = new Vector2(rb.velocity.x * Math.Abs(horizontalInput), rb.velocity.y);
+                //TODO: if horizontalInput is the opposite sign of the velocity, then set the velocity to zero or start adding negatively to it.
+                //rb.velocity = new Vector2(rb.velocity.x + horizontalInput, rb.velocity.y);
+                if(rb.velocity.x > 0f && horizontalInput > 0)
+                {
+                    rb.velocity = new Vector2(maxSpeed, rb.velocity.y);
+                } else if(rb.velocity.x < 0f && horizontalInput < 0)
+                {
+                    rb.velocity = new Vector2(-maxSpeed, rb.velocity.y);
+                } else
+                {
+                    rb.velocity = new Vector2(0f, rb.velocity.y);
+                }
             }
             else // treat normal
             {
