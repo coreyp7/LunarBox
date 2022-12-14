@@ -1,8 +1,20 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
+/**
+ * Things left to do in here:
+ * 
+ * - Clean up this class and optimize it, the its really lazy and ugly right now.
+ * 
+ * - Implement it so that if player presses it initially it pauses longer than normal, so that its easy
+ * for the user to just move by one space. If the player is still holding the direction after the small
+ * pause, then move the editor cursor
+ * 
+ */
 public class PlayerEditorBehavior : MonoBehaviour
 {
     private float horizontalInput;
@@ -17,49 +29,55 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     private Boolean dDown;
 
+    private Boolean beingHandled;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        beingHandled = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
         //horizontalInput = Input.GetAxisRaw("Horizontal");
         //verticalInput = Input.GetAxisRaw("Vertical");
-        wDown = Input.GetKeyDown(KeyCode.W);
-        aDown = Input.GetKeyDown(KeyCode.A);
-        sDown = Input.GetKeyDown(KeyCode.S);
-        dDown = Input.GetKeyDown(KeyCode.D);
+        wDown = Input.GetKey(KeyCode.W);
+        aDown = Input.GetKey(KeyCode.A);
+        sDown = Input.GetKey(KeyCode.S);
+        dDown = Input.GetKey(KeyCode.D);
 
-        if (dDown)
+        if ((wDown || aDown || sDown || dDown) && (!beingHandled))
         {
-            transform.position = new Vector3(transform.position.x + .5f, transform.position.y, 0);
-            //StartCoroutine(WaitCoroutine());
-        } 
-        else if (aDown)
-        {
-            transform.position = new Vector3(transform.position.x - .5f, transform.position.y, 0);
-            //StartCoroutine(WaitCoroutine());
-        }
-
-        if(wDown)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y + .5f, 0);
-            //StartCoroutine(WaitCoroutine());
-        }
-        else if(sDown)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y - .5f, 0);
-            //StartCoroutine(WaitCoroutine());
+            StartCoroutine(WaitCoroutine());
         }
 
     }
 
     IEnumerator WaitCoroutine()
     {
-        yield return new WaitForSeconds(1f);
+        beingHandled = true;
+
+        if (dDown)
+        {
+            transform.position = new Vector3(transform.position.x + .5f, transform.position.y, 0);
+        }
+        else if (aDown)
+        {
+            transform.position = new Vector3(transform.position.x - .5f, transform.position.y, 0);
+        }
+
+        if (wDown)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y + .5f, 0);
+        }
+        else if (sDown)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y - .5f, 0);
+        }
+
+        yield return new WaitForSeconds(.10f);
+
+        beingHandled = false;
     }
 }
