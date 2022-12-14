@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 /**
  * Things left to do in here:
@@ -37,6 +38,13 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     private KeyCode lastKeyHeld;
 
+    private Boolean placeBtnDown;
+
+    [SerializeField]
+    private TileBase groundBlock;
+
+    [SerializeField]
+    private Tilemap groundTilemap;
 
     // Start is called before the first frame update
     void Start()
@@ -53,15 +61,17 @@ public class PlayerEditorBehavior : MonoBehaviour
         aDown = Input.GetKey(KeyCode.A);
         sDown = Input.GetKey(KeyCode.S);
         dDown = Input.GetKey(KeyCode.D);
-        
 
+        placeBtnDown = Input.GetKey(KeyCode.P);
+
+        if (placeBtnDown)
+        {
+            PlaceCurrentTile();
+        }
 
         if ((wDown || aDown || sDown || dDown) && (!beingHandled))
         {
             StartCoroutine(WaitCoroutine());
-        } else if (!beingHandled)
-        {
-            lastKeyHeld = KeyCode.None;
         }
 
     }
@@ -69,9 +79,42 @@ public class PlayerEditorBehavior : MonoBehaviour
     IEnumerator WaitCoroutine()
     {
         beingHandled = true;
-
-
         if (dDown)
+        {
+            transform.position = new Vector3(transform.position.x + .5f, transform.position.y, 0);
+        }
+        else if (aDown)
+        {
+            transform.position = new Vector3(transform.position.x - .5f, transform.position.y, 0);
+        }
+
+        if (wDown)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y + .5f, 0);
+        }
+        else if (sDown)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y - .5f, 0);
+        }
+        yield return new WaitForSeconds(holdingMoveSpeed);
+        beingHandled = false;
+    }
+
+    void PlaceCurrentTile()
+    {
+        Vector3Int cursorPosition = groundTilemap.WorldToCell(transform.position);
+        //transform.localPosition = groundTilemap.CellToLocal(cursorPosition);
+        groundTilemap.SetTile(cursorPosition, groundBlock);
+
+        Debug.Log("Tile placed @ " + transform.position);
+    }
+
+
+    /**
+     * Keeping this here in case I want to revert to later.
+     * Tried to refine cursor movement but ended up being shitty.
+     * 
+     * if (dDown)
         {
             if(lastKeyHeld == KeyCode.D)
             {
@@ -128,6 +171,7 @@ public class PlayerEditorBehavior : MonoBehaviour
                 yield return new WaitForSeconds(initialMoveSpeed);
             }
         }
-        beingHandled = false;
-    }
+    */
+
 }
+

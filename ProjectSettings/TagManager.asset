@@ -11,19 +11,19 @@ TagManager:
   - 
   - Water
   - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - Hazard
+  - Force Blocks
+  - 
+  - 
+  - 
+  - 
+  - 
   - Ground
-  - Wall
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
   - 
   - 
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 1240529885
+    locked: 0
+  - name: Force Blocks
+    uniqueID: 2156659625
+    locked: 0
+  - name: Hazard
+    uniqueID: 1027142933
+    locked: 0
+  - name: Player Editor Block
+    uniqueID: 2333618041
     locked: 0
