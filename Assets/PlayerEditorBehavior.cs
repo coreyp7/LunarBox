@@ -31,11 +31,18 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     private Boolean beingHandled;
 
+    private float initialMoveSpeed = .20f;
+
+    private float holdingMoveSpeed = .05f;
+
+    private KeyCode lastKeyHeld;
+
 
     // Start is called before the first frame update
     void Start()
     {
         beingHandled = false;
+        lastKeyHeld = KeyCode.None;
     }
 
     void Update()
@@ -46,10 +53,15 @@ public class PlayerEditorBehavior : MonoBehaviour
         aDown = Input.GetKey(KeyCode.A);
         sDown = Input.GetKey(KeyCode.S);
         dDown = Input.GetKey(KeyCode.D);
+        
+
 
         if ((wDown || aDown || sDown || dDown) && (!beingHandled))
         {
             StartCoroutine(WaitCoroutine());
+        } else if (!beingHandled)
+        {
+            lastKeyHeld = KeyCode.None;
         }
 
     }
@@ -58,26 +70,64 @@ public class PlayerEditorBehavior : MonoBehaviour
     {
         beingHandled = true;
 
+
         if (dDown)
         {
-            transform.position = new Vector3(transform.position.x + .5f, transform.position.y, 0);
+            if(lastKeyHeld == KeyCode.D)
+            {
+                transform.position = new Vector3(transform.position.x + .5f, transform.position.y, 0);
+                yield return new WaitForSeconds(holdingMoveSpeed);
+            } 
+            else
+            {
+                transform.position = new Vector3(transform.position.x + .5f, transform.position.y, 0);
+                lastKeyHeld = KeyCode.D;
+                yield return new WaitForSeconds(initialMoveSpeed);
+            }
         }
         else if (aDown)
         {
-            transform.position = new Vector3(transform.position.x - .5f, transform.position.y, 0);
+            if (lastKeyHeld == KeyCode.A)
+            {
+                transform.position = new Vector3(transform.position.x - .5f, transform.position.y, 0);
+                yield return new WaitForSeconds(holdingMoveSpeed);
+            }
+            else
+            {
+                transform.position = new Vector3(transform.position.x - .5f, transform.position.y, 0);
+                lastKeyHeld = KeyCode.A;
+                yield return new WaitForSeconds(initialMoveSpeed);
+            }
         }
 
         if (wDown)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y + .5f, 0);
+            if (lastKeyHeld == KeyCode.W)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y + .5f, 0);
+                yield return new WaitForSeconds(holdingMoveSpeed);
+            }
+            else
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y + .5f, 0);
+                lastKeyHeld = KeyCode.W;
+                yield return new WaitForSeconds(initialMoveSpeed);
+            }
         }
         else if (sDown)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y - .5f, 0);
+            if (lastKeyHeld == KeyCode.S)
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y - .5f, 0);
+                yield return new WaitForSeconds(holdingMoveSpeed);
+            }
+            else
+            {
+                transform.position = new Vector3(transform.position.x, transform.position.y - .5f, 0);
+                lastKeyHeld = KeyCode.S;
+                yield return new WaitForSeconds(initialMoveSpeed);
+            }
         }
-
-        yield return new WaitForSeconds(.10f);
-
         beingHandled = false;
     }
 }
