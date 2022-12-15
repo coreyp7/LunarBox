@@ -81,19 +81,20 @@ public class PlayerEditorBehavior : MonoBehaviour
         placeBtnDown = Input.GetKey(KeyCode.P);
         deleteBtnDown = Input.GetKey(KeyCode.O);
 
-
-        if (placeBtnDown) 
+        if (placeBtnDown)
+        {
+            DeleteCurrentTile();
             PlaceCurrentTile();
-        
+        }
 
         if(deleteBtnDown)
             DeleteCurrentTile();
+
 
         if ((wDown || aDown || sDown || dDown) && (!beingHandled))
         {
             StartCoroutine(WaitCoroutine());
         }
-
     }
 
     IEnumerator WaitCoroutine()
@@ -123,7 +124,7 @@ public class PlayerEditorBehavior : MonoBehaviour
     void PlaceCurrentTile()
     {
         Vector3Int cursorPosition = groundTilemap.WorldToCell(transform.position);
-        //transform.localPosition = groundTilemap.CellToLocal(cursorPosition);
+
         groundTilemap.SetTile(cursorPosition, groundBlock);
 
         Debug.Log("Tile placed @ " + transform.position);
