@@ -40,17 +40,33 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     private Boolean placeBtnDown;
 
+    private Boolean deleteBtnDown;
+
     [SerializeField]
     private TileBase groundBlock;
 
     [SerializeField]
     private Tilemap groundTilemap;
 
+    [SerializeField]
+    private Tilemap hazardTilemap;
+
+    [SerializeField]
+    private Tilemap forceUpTilemap;
+
+    [SerializeField]
+    private Tilemap forceDownTilemap;
+
+    [SerializeField]
+    private Tilemap forceLeftTilemap;
+
+    [SerializeField]
+    private Tilemap forceRightTilemap;
+
     // Start is called before the first frame update
     void Start()
     {
         beingHandled = false;
-        lastKeyHeld = KeyCode.None;
     }
 
     void Update()
@@ -63,11 +79,15 @@ public class PlayerEditorBehavior : MonoBehaviour
         dDown = Input.GetKey(KeyCode.D);
 
         placeBtnDown = Input.GetKey(KeyCode.P);
+        deleteBtnDown = Input.GetKey(KeyCode.O);
 
-        if (placeBtnDown)
-        {
+
+        if (placeBtnDown) 
             PlaceCurrentTile();
-        }
+        
+
+        if(deleteBtnDown)
+            DeleteCurrentTile();
 
         if ((wDown || aDown || sDown || dDown) && (!beingHandled))
         {
@@ -109,6 +129,54 @@ public class PlayerEditorBehavior : MonoBehaviour
         Debug.Log("Tile placed @ " + transform.position);
     }
 
+    void DeleteCurrentTile()
+    {
+        // First check for ground/hazard. If not then go through all the force blocks manually.
+        // Really stupid but the only way to do this with the current configuration.
+        Vector3Int cursorPosition = groundTilemap.WorldToCell(transform.position);
+        Boolean groundTile = groundTilemap.HasTile(cursorPosition);
+        if (groundTile)
+        {
+            groundTilemap.SetTile(cursorPosition, null);
+            return;
+        }
+
+        cursorPosition = hazardTilemap.WorldToCell(transform.position);
+        Boolean hazardTile = hazardTilemap.HasTile(cursorPosition);
+        if (hazardTile)
+        {
+            hazardTilemap.SetTile(cursorPosition, null);
+            return;
+        }
+
+        cursorPosition = forceUpTilemap.WorldToCell(transform.position);
+        Boolean forceUp = forceUpTilemap.HasTile(cursorPosition);
+        if (forceUp)
+        {
+            forceUpTilemap.SetTile(cursorPosition, null);
+        }
+
+        cursorPosition = forceDownTilemap.WorldToCell(transform.position);
+        Boolean forceDown = forceDownTilemap.HasTile(cursorPosition);
+        if (forceDown)
+        {
+            forceDownTilemap.SetTile(cursorPosition, null);
+        }
+
+        cursorPosition = forceLeftTilemap.WorldToCell(transform.position);
+        Boolean forceLeft = forceLeftTilemap.HasTile(cursorPosition);
+        if (forceLeft)
+        {
+            forceLeftTilemap.SetTile(cursorPosition, null);
+        }
+
+        cursorPosition = forceRightTilemap.WorldToCell(transform.position);
+        Boolean forceRight = forceRightTilemap.HasTile(cursorPosition);
+        if (forceRight)
+        {
+            forceRightTilemap.SetTile(cursorPosition, null);
+        }
+    }
 
     /**
      * Keeping this here in case I want to revert to later.

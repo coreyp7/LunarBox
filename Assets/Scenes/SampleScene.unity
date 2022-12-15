@@ -1401,7 +1401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60974a8896156c846978112eb44c852e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  trackingTarget: {fileID: 116131998}
+  trackingTarget: {fileID: 1811682261}
   xOffset: 0
   yOffset: 0.5
   followSpeed: 10
@@ -11867,6 +11867,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 946c5bf8b7ee5234383fd1aaddf29af4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundBlock: {fileID: 11400000, guid: cb392fc5365b41840ba532c2dff61eed, type: 2}
+  groundTilemap: {fileID: 896483838}
 --- !u!212 &1811682260
 SpriteRenderer:
   m_ObjectHideFlags: 0
