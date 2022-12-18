@@ -22,7 +22,10 @@ public class PlayerEditorBehavior : MonoBehaviour
     {
         Ground,
         Hazard,
-        Force
+        ForceUp,
+        ForceDown,
+        ForceLeft,
+        ForceRight
     }
 
     private float horizontalInput;
@@ -60,6 +63,15 @@ public class PlayerEditorBehavior : MonoBehaviour
     [SerializeField]
     private TileBase forceUpTile;
 
+    [SerializeField]
+    private TileBase forceDownTile;
+
+    [SerializeField]
+    private TileBase forceLeftTile;
+
+    [SerializeField]
+    private TileBase forceRightTile;
+
     private List<TileType> tileSelectionList;
     private int tileSelectionListCurrentIndex;
 
@@ -91,7 +103,10 @@ public class PlayerEditorBehavior : MonoBehaviour
         tileSelectionList = new List<TileType>();
         tileSelectionList.Add(TileType.Ground);
         tileSelectionList.Add(TileType.Hazard);
-        tileSelectionList.Add(TileType.Force);
+        tileSelectionList.Add(TileType.ForceUp);
+        tileSelectionList.Add (TileType.ForceDown);
+        tileSelectionList.Add(TileType.ForceLeft);
+        tileSelectionList.Add(TileType.ForceRight);
         tileSelectionListCurrentIndex = 0;
 
 
@@ -185,9 +200,20 @@ public class PlayerEditorBehavior : MonoBehaviour
         } else if(currentTileType == TileType.Hazard)
         {
             hazardTilemap.SetTile(cursorPosition, hazardTile);
-        } else if(currentTileType == TileType.Force)
+        } else if(currentTileType == TileType.ForceUp)
         {
             forceUpTilemap.SetTile(cursorPosition, forceUpTile);
+        } else if(currentTileType== TileType.ForceDown)
+        {
+            forceDownTilemap.SetTile(cursorPosition, forceDownTile);
+        }
+        else if (currentTileType == TileType.ForceRight)
+        {
+            forceRightTilemap.SetTile(cursorPosition, forceRightTile);
+        }
+        else if (currentTileType == TileType.ForceLeft)
+        {
+            forceLeftTilemap.SetTile(cursorPosition, forceLeftTile);
         }
 
         //Debug.Log("Tile placed @ " + transform.position);
