@@ -18,6 +18,13 @@ using UnityEngine.Tilemaps;
  */
 public class PlayerEditorBehavior : MonoBehaviour
 {
+    enum TileType
+    {
+        Ground,
+        Hazard,
+        Force
+    }
+
     private float horizontalInput;
 
     private float verticalInput;
@@ -42,8 +49,22 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     private Boolean deleteBtnDown;
 
+    // tiles
+
     [SerializeField]
     private TileBase groundBlock;
+
+    [SerializeField]
+    private TileBase hazardTile;
+
+    [SerializeField]
+    private TileBase forceUpTile;
+
+    private List<TileType> tileSelectionList;
+    private int tileSelectionListCurrentIndex;
+
+
+    // tilemaps
 
     [SerializeField]
     private Tilemap groundTilemap;
@@ -67,6 +88,31 @@ public class PlayerEditorBehavior : MonoBehaviour
     void Start()
     {
         beingHandled = false;
+        tileSelectionList = new List<TileType>();
+        tileSelectionList.Add(TileType.Ground);
+        tileSelectionList.Add(TileType.Hazard);
+        tileSelectionList.Add(TileType.Force);
+        tileSelectionListCurrentIndex = 0;
+
+
+    }
+    
+    private void selectNextTileType()
+    {
+        tileSelectionListCurrentIndex += 1;
+        if (tileSelectionListCurrentIndex >= tileSelectionList.Count)
+            tileSelectionListCurrentIndex = 0;
+
+        Debug.Log("New tile type is " + tileSelectionList[tileSelectionListCurrentIndex]);
+    }
+
+    private void selectPreviousTileType()
+    {
+        tileSelectionListCurrentIndex -= 1;
+        if (tileSelectionListCurrentIndex < 0)
+            tileSelectionListCurrentIndex = tileSelectionList.Count-1;
+
+        Debug.Log("New tile type is " + tileSelectionList[tileSelectionListCurrentIndex]);
     }
 
     void Update()
@@ -81,15 +127,21 @@ public class PlayerEditorBehavior : MonoBehaviour
         placeBtnDown = Input.GetKey(KeyCode.P);
         deleteBtnDown = Input.GetKey(KeyCode.O);
 
+        // Change tile type when user selects new one
+        if (Input.GetKeyDown(KeyCode.N))
+            selectNextTileType();
+        else if (Input.GetKeyDown(KeyCode.B))
+            selectPreviousTileType();
+
+        // Handle player editing inputs (place/delete blocks
         if (placeBtnDown)
         {
             DeleteCurrentTile();
             PlaceCurrentTile();
-        }
-
-        if(deleteBtnDown)
+        } else if (deleteBtnDown)
+        {
             DeleteCurrentTile();
-
+        }
 
         if ((wDown || aDown || sDown || dDown) && (!beingHandled))
         {
@@ -125,9 +177,20 @@ public class PlayerEditorBehavior : MonoBehaviour
     {
         Vector3Int cursorPosition = groundTilemap.WorldToCell(transform.position);
 
-        groundTilemap.SetTile(cursorPosition, groundBlock);
+        TileType currentTileType = tileSelectionList[tileSelectionListCurrentIndex];
+        //groundTilemap.SetTile(cursorPosition, groundBlock);
+        if (currentTileType == TileType.Ground)
+        {
+            groundTilemap.SetTile(cursorPosition, groundBlock);
+        } else if(currentTileType == TileType.Hazard)
+        {
+            hazardTilemap.SetTile(cursorPosition, hazardTile);
+        } else if(currentTileType == TileType.Force)
+        {
+            forceUpTilemap.SetTile(cursorPosition, forceUpTile);
+        }
 
-        Debug.Log("Tile placed @ " + transform.position);
+        //Debug.Log("Tile placed @ " + transform.position);
     }
 
     void DeleteCurrentTile()
