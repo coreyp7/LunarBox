@@ -18,6 +18,8 @@ using UnityEngine.Tilemaps;
  */
 public class PlayerEditorBehavior : MonoBehaviour
 {
+    [SerializeField]
+    private UIManager uiManager;
     enum TileType
     {
         Ground,
@@ -119,6 +121,7 @@ public class PlayerEditorBehavior : MonoBehaviour
             tileSelectionListCurrentIndex = 0;
 
         Debug.Log("New tile type is " + tileSelectionList[tileSelectionListCurrentIndex]);
+        uiManager.changeTileType(Enum.GetName(typeof(TileType), tileSelectionList[tileSelectionListCurrentIndex]));
     }
 
     private void selectPreviousTileType()
