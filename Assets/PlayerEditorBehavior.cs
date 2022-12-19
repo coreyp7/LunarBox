@@ -42,6 +42,14 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     private Boolean dDown;
 
+    private Boolean Alpha1Down;
+    private Boolean Alpha2Down;
+    private Boolean Alpha3Down;
+    private Boolean Alpha4Down;
+    private Boolean Alpha5Down;
+    private Boolean Alpha6Down;
+
+
     private Boolean beingHandled;
 
     private float initialMoveSpeed = .20f;
@@ -145,11 +153,21 @@ public class PlayerEditorBehavior : MonoBehaviour
         placeBtnDown = Input.GetKey(KeyCode.P);
         deleteBtnDown = Input.GetKey(KeyCode.O);
 
+        Alpha1Down = Input.GetKeyDown(KeyCode.Alpha1);
+        Alpha2Down = Input.GetKeyDown(KeyCode.Alpha2);
+        Alpha3Down = Input.GetKeyDown(KeyCode.Alpha3);
+        Alpha4Down = Input.GetKeyDown(KeyCode.Alpha4);
+        Alpha5Down = Input.GetKeyDown(KeyCode.Alpha5);
+        Alpha6Down = Input.GetKeyDown(KeyCode.Alpha6);
+
         // Change tile type when user selects new one
+        /*
         if (Input.GetKeyDown(KeyCode.N))
             selectNextTileType();
         else if (Input.GetKeyDown(KeyCode.B))
             selectPreviousTileType();
+        */
+        DetectAlphaNumericKeyDown();
 
         // Handle player editing inputs (place/delete blocks
         if (placeBtnDown)
@@ -164,6 +182,40 @@ public class PlayerEditorBehavior : MonoBehaviour
         if ((wDown || aDown || sDown || dDown) && (!beingHandled))
         {
             StartCoroutine(WaitCoroutine());
+        }
+    }
+
+    private void DetectAlphaNumericKeyDown()
+    {
+        if (Alpha1Down)
+        {
+            tileSelectionListCurrentIndex = 0;
+            uiManager.changeTileType(Enum.GetName(typeof(TileType), tileSelectionList[tileSelectionListCurrentIndex]));
+        }
+        else if (Alpha2Down)
+        {
+            tileSelectionListCurrentIndex = 1;
+            uiManager.changeTileType(Enum.GetName(typeof(TileType), tileSelectionList[tileSelectionListCurrentIndex]));
+        }
+        else if (Alpha3Down)
+        {
+            tileSelectionListCurrentIndex = 2;
+            uiManager.changeTileType(Enum.GetName(typeof(TileType), tileSelectionList[tileSelectionListCurrentIndex]));
+        }
+        else if (Alpha4Down)
+        {
+            tileSelectionListCurrentIndex = 3;
+            uiManager.changeTileType(Enum.GetName(typeof(TileType), tileSelectionList[tileSelectionListCurrentIndex]));
+        }
+        else if (Alpha5Down)
+        {
+            tileSelectionListCurrentIndex = 4;
+            uiManager.changeTileType(Enum.GetName(typeof(TileType), tileSelectionList[tileSelectionListCurrentIndex]));
+        }
+        else if (Alpha6Down)
+        {
+            tileSelectionListCurrentIndex = 5;
+            uiManager.changeTileType(Enum.GetName(typeof(TileType), tileSelectionList[tileSelectionListCurrentIndex]));
         }
     }
 
