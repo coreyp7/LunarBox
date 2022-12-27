@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -58,6 +59,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     public float maxSpeed;
+
+    private Vector2 lastCheckpoint;
 
     private void Awake()
     {
@@ -177,6 +180,10 @@ public class PlayerController : MonoBehaviour
             rb.velocity += Vector2.up * Physics2D.gravity.y * 1f * Time.deltaTime;
         }
 
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            transform.position = this.lastCheckpoint;
+        }
     }
 
     void FixedUpdate()
@@ -278,5 +285,11 @@ public class PlayerController : MonoBehaviour
     {
         //horizontalInputLocked = true;
         horizontalInputLockTimestamp = Time.time + 0.10f;
+    }
+
+    public void setCheckpoint()
+    {
+        this.lastCheckpoint = this.transform.position;
+        Debug.Log("Player checkpoint pos set to " + this.transform.position);
     }
 }
