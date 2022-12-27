@@ -316,6 +316,7 @@ public class PlayerEditorBehavior : MonoBehaviour
         if (forceUp)
         {
             forceUpTilemap.SetTile(cursorPosition, null);
+            return;
         }
 
         cursorPosition = forceDownTilemap.WorldToCell(transform.position);
@@ -323,6 +324,7 @@ public class PlayerEditorBehavior : MonoBehaviour
         if (forceDown)
         {
             forceDownTilemap.SetTile(cursorPosition, null);
+            return;
         }
 
         cursorPosition = forceLeftTilemap.WorldToCell(transform.position);
@@ -330,6 +332,7 @@ public class PlayerEditorBehavior : MonoBehaviour
         if (forceLeft)
         {
             forceLeftTilemap.SetTile(cursorPosition, null);
+            return;
         }
 
         cursorPosition = forceRightTilemap.WorldToCell(transform.position);
@@ -337,7 +340,34 @@ public class PlayerEditorBehavior : MonoBehaviour
         if (forceRight)
         {
             forceRightTilemap.SetTile(cursorPosition, null);
+            return;
         }
+
+        // Either it is a checkpoint or it is empty.
+        Collider2D[] colliders;
+        if((colliders = Physics2D.OverlapBoxAll(transform.position, new Vector2(.25f, .25f), 0f)).Length > 1)
+        {
+            foreach(var collider in colliders)
+            {
+                if(collider.gameObject.tag == "Checkpoint")
+                {
+                    Destroy(collider.gameObject);
+                }
+            }
+        }
+
+        /*
+        if((colliders = Physics.OverlapBox(transform.position, new Vector3(.5f, .5f))).Length > 1)
+        {
+            Debug.Log("Entered");
+            foreach (var collider in colliders)
+            {
+                if (collider.gameObject.tag == "Checkpoint")
+                {
+                    Destroy(collider.gameObject);
+                }
+            }
+        */
     }
 
     /**
