@@ -27,7 +27,8 @@ public class PlayerEditorBehavior : MonoBehaviour
         ForceUp,
         ForceDown,
         ForceLeft,
-        ForceRight
+        ForceRight,
+        Checkpoint // this one isn't a tile
     }
 
     private float horizontalInput;
@@ -42,6 +43,7 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     private Boolean dDown;
 
+    private Boolean Alpha0Down;
     private Boolean Alpha1Down;
     private Boolean Alpha2Down;
     private Boolean Alpha3Down;
@@ -106,6 +108,9 @@ public class PlayerEditorBehavior : MonoBehaviour
     [SerializeField]
     private Tilemap forceRightTilemap;
 
+    [SerializeField]
+    private GameObject checkpointPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -117,6 +122,7 @@ public class PlayerEditorBehavior : MonoBehaviour
         tileSelectionList.Add (TileType.ForceDown);
         tileSelectionList.Add(TileType.ForceLeft);
         tileSelectionList.Add(TileType.ForceRight);
+        tileSelectionList.Add(TileType.Checkpoint);
         tileSelectionListCurrentIndex = 0;
 
 
@@ -153,6 +159,7 @@ public class PlayerEditorBehavior : MonoBehaviour
         placeBtnDown = Input.GetKey(KeyCode.P);
         deleteBtnDown = Input.GetKey(KeyCode.O);
 
+        Alpha0Down = Input.GetKeyDown(KeyCode.Alpha0);
         Alpha1Down = Input.GetKeyDown(KeyCode.Alpha1);
         Alpha2Down = Input.GetKeyDown(KeyCode.Alpha2);
         Alpha3Down = Input.GetKeyDown(KeyCode.Alpha3);
@@ -187,7 +194,12 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     private void DetectAlphaNumericKeyDown()
     {
-        if (Alpha1Down)
+        if (Alpha0Down)
+        {
+            tileSelectionListCurrentIndex = 6;
+            uiManager.changeTileType(Enum.GetName(typeof(TileType), tileSelectionList[tileSelectionListCurrentIndex]));
+        }
+        else if (Alpha1Down)
         {
             tileSelectionListCurrentIndex = 0;
             uiManager.changeTileType(Enum.GetName(typeof(TileType), tileSelectionList[tileSelectionListCurrentIndex]));
@@ -269,6 +281,11 @@ public class PlayerEditorBehavior : MonoBehaviour
         else if (currentTileType == TileType.ForceLeft)
         {
             forceLeftTilemap.SetTile(cursorPosition, forceLeftTile);
+        }
+        else if (currentTileType == TileType.Checkpoint)
+        {
+            //GameObject newCheckpoint = Instantiate(checkpointBlock, this.transform) as GameObject;
+            Instantiate(checkpointPrefab, this.transform.position, Quaternion.identity);
         }
 
         //Debug.Log("Tile placed @ " + transform.position);

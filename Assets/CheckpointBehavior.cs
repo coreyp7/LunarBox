@@ -15,6 +15,7 @@ public class CheckpointBehavior : MonoBehaviour
     void Start()
     {
         //checkpointTilemap = GetComponent<Tilemap>();
+        player = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
     }
 
     // Update is called once per frame

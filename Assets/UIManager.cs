@@ -23,6 +23,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Image tilePreviewImage;
 
+    [SerializeField]
+    private GameObject checkpointPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +59,9 @@ public class UIManager : MonoBehaviour
                 break;
             case "ForceRight":
                 tilePreviewImage.sprite = forceRightTileImage.sprite;
+                break;
+            case "Checkpoint":
+                tilePreviewImage.sprite = checkpointPrefab.GetComponent<SpriteRenderer>().sprite;
                 break;
         }
 
