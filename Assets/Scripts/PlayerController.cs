@@ -292,4 +292,11 @@ public class PlayerController : MonoBehaviour
         this.lastCheckpoint = this.transform.position;
         Debug.Log("Player checkpoint pos set to " + this.transform.position);
     }
+
+    public void setCheckpoint(Vector3 position)
+    {
+        this.lastCheckpoint = position;
+        Debug.Log("Player checkpoint pos set to " + position);
+
+    }
 }
