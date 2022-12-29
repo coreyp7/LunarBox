@@ -111,6 +111,9 @@ public class PlayerEditorBehavior : MonoBehaviour
     [SerializeField]
     private GameObject checkpointPrefab;
 
+    [SerializeField]
+    private GameObject checkpointContainer;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -285,7 +288,8 @@ public class PlayerEditorBehavior : MonoBehaviour
         else if (currentTileType == TileType.Checkpoint)
         {
             //GameObject newCheckpoint = Instantiate(checkpointBlock, this.transform) as GameObject;
-            Instantiate(checkpointPrefab, this.transform.position, Quaternion.identity);
+            GameObject newCheckpoint = Instantiate(checkpointPrefab, this.transform.position, Quaternion.identity);
+            newCheckpoint.transform.parent = checkpointContainer.transform;
         }
 
         //Debug.Log("Tile placed @ " + transform.position);
