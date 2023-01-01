@@ -51,6 +51,9 @@ public class PlayerEditorBehavior : MonoBehaviour
     private Boolean Alpha5Down;
     private Boolean Alpha6Down;
 
+    private Boolean vDown;
+    private Boolean cDown;
+
 
     private Boolean beingHandled;
 
@@ -114,6 +117,9 @@ public class PlayerEditorBehavior : MonoBehaviour
     [SerializeField]
     private GameObject checkpointContainer;
 
+    [SerializeField]
+    private GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -170,6 +176,9 @@ public class PlayerEditorBehavior : MonoBehaviour
         Alpha5Down = Input.GetKeyDown(KeyCode.Alpha5);
         Alpha6Down = Input.GetKeyDown(KeyCode.Alpha6);
 
+        cDown = Input.GetKeyDown(KeyCode.C);
+        vDown = Input.GetKeyDown(KeyCode.V);
+
         // Change tile type when user selects new one
         /*
         if (Input.GetKeyDown(KeyCode.N))
@@ -193,6 +202,17 @@ public class PlayerEditorBehavior : MonoBehaviour
         {
             StartCoroutine(WaitCoroutine());
         }
+
+        if (cDown)
+        {
+            SerializeCurrentLevel();
+        }
+    }
+
+    // Serialize Box 0,0 - 71,25 into json or something like that.
+    private void SerializeCurrentLevel()
+    {
+        gameManager.serializeCurrentLevel();
     }
 
     private void DetectAlphaNumericKeyDown()
@@ -287,7 +307,6 @@ public class PlayerEditorBehavior : MonoBehaviour
         }
         else if (currentTileType == TileType.Checkpoint)
         {
-            //GameObject newCheckpoint = Instantiate(checkpointBlock, this.transform) as GameObject;
             GameObject newCheckpoint = Instantiate(checkpointPrefab, this.transform.position, Quaternion.identity);
             newCheckpoint.transform.parent = checkpointContainer.transform;
         }
