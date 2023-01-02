@@ -722,6 +722,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   groundTilemap: {fileID: 896483838}
+  groundTile: {fileID: 11400000, guid: cb392fc5365b41840ba532c2dff61eed, type: 2}
+  hazardTilemap: {fileID: 830781810}
+  hazardTile: {fileID: 11400000, guid: 531e051ddaefa014b87caccba281c58f, type: 2}
+  forceUpTilemap: {fileID: 761475984}
+  forceUpTile: {fileID: 11400000, guid: 8aaa4f805f5f88741aedb0b3e7595e92, type: 2}
+  forceDownTilemap: {fileID: 1199109892}
+  forceDownTile: {fileID: 11400000, guid: 67cba8c28fcb6aa4eaf80cda0fbe9358, type: 2}
+  forceLeftTilemap: {fileID: 1826563110}
+  forceLeftTile: {fileID: 11400000, guid: 85136b913b3a39b49b4d3fb2bb6a53a8, type: 2}
+  forceRightTilemap: {fileID: 357194806}
+  forceRightTile: {fileID: 11400000, guid: f705ab9c9b9e6b548b98d8a93b38837f, type: 2}
 --- !u!4 &623629482
 Transform:
   m_ObjectHideFlags: 0

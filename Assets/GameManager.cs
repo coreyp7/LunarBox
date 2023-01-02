@@ -148,9 +148,6 @@ public class GameManager : MonoBehaviour
 
         TileList deserializedTileList = JsonUtility.FromJson<TileList>(json);
 
-        // Loop through tilelist
-        //      place this tile in the ground tilemap by its cords
-
         foreach(TileSerialize tile in deserializedTileList.tiles)
         {
             Vector3Int tilePosition = new(tile.x, tile.y);

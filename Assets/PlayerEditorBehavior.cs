@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 /**
  * Things left to do in here:
@@ -214,10 +216,29 @@ public class PlayerEditorBehavior : MonoBehaviour
         }
     }
 
+    private Vector2 position = new Vector2(17.75f, 6.25f);
+    private Vector2 size = new Vector2(34.5f, 12.5f);
+
     // Serialize Box 0,0 - 71,25 into json or something like that.
     private void SerializeCurrentLevel()
     {
-        gameManager.serializeCurrentLevel();
+
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(position, size, 0f);
+        foreach(Collider2D collider in colliders)
+        {
+            if(collider.tag == "Checkpoint")
+            {
+                Debug.Log("name:"+collider.name+", tag:"+collider.tag);
+            }
+        }
+
+        //gameManager.serializeCurrentLevel();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireCube(position, size);
+
     }
 
     private void DeserializeLevelFile(string filepath)
