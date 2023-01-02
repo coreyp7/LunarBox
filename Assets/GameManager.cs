@@ -12,6 +12,36 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TileBase groundTile;
 
+    [SerializeField]
+    private Tilemap hazardTilemap;
+
+    [SerializeField]
+    private TileBase hazardTile;
+
+    [SerializeField]
+    private Tilemap forceUpTilemap;
+
+    [SerializeField]
+    private TileBase forceUpTile;
+
+    [SerializeField]
+    private Tilemap forceDownTilemap;
+
+    [SerializeField]
+    private TileBase forceDownTile;
+
+    [SerializeField]
+    private Tilemap forceLeftTilemap;
+
+    [SerializeField]
+    private TileBase forceLeftTile;
+
+    [SerializeField]
+    private Tilemap forceRightTilemap;
+
+    [SerializeField]
+    private TileBase forceRightTile;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,19 +59,36 @@ public class GameManager : MonoBehaviour
     {
         BoundsInt box = new BoundsInt(0, 0, 0, 71, 25, 1);
 
-        TileBase[] tiles = groundTilemap.GetTilesBlock(box);
-        Debug.Log("tiles.length is: "+tiles.Length);
+        // Get arrays for each tilemap, which contain each tile location in the box.
+        TileBase[] groundTiles = groundTilemap.GetTilesBlock(box);
+        TileBase[] hazardTiles = hazardTilemap.GetTilesBlock(box);
+        TileBase[] forceUpTiles = forceUpTilemap.GetTilesBlock(box);
+        TileBase[] forceDownTiles = forceDownTilemap.GetTilesBlock(box);
+        TileBase[] forceLeftTiles = forceLeftTilemap.GetTilesBlock(box);
+        TileBase[] forceRightTiles = forceRightTilemap.GetTilesBlock(box);
 
-        TileList tileSerializes = new TileList();
+        //Debug.Log("tiles.length is: "+ groundTiles.Length);
+
+        TileList tileSerializes = new TileList(); // list of TileSerialized objects
         
         for(int x = 0; x < 71; x++)
         {
             for(int y = 0; y < 25; y++)
             {
-                TileBase tile = tiles[x + y * 71]; // magic ??
+                int index = x + y * 71; // magic ??
+
+                TileBase tile = groundTiles[index];
                 if (tile != null)
                 {
                     tileSerializes.tiles.Add(new TileSerialize(x, y, "ground"));
+                    continue;
+                }
+
+                tile = hazardTiles[index];
+                if(tile != null)
+                {
+                    tileSerializes.tiles.Add(new TileSerialize(x, y, "hazard"));
+                    continue;
                 }
             }
         }
@@ -78,7 +125,13 @@ public class GameManager : MonoBehaviour
 
         foreach(TileSerialize tile in deserializedTileList.tiles)
         {
-            groundTilemap.SetTile(new Vector3Int(tile.x, tile.y), groundTile);
+            if(tile.type == "ground")
+            {
+                groundTilemap.SetTile(new Vector3Int(tile.x, tile.y), groundTile);
+            } else if(tile.type == "hazard")
+            {
+                hazardTilemap.SetTile(new Vector3Int(tile.x, tile.y), hazardTile);
+            }
         }
     }
 
