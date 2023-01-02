@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Serialize Box 0,0 - 71,25 into json or something like that.
-    public void serializeCurrentLevel()
+    public async void serializeCurrentLevel()
     {
         BoundsInt box = new BoundsInt(0, 0, 0, 71, 25, 1);
 
@@ -38,26 +38,30 @@ public class GameManager : MonoBehaviour
                 TileBase tile = tiles[x + y * 71]; // magic ??
                 if (tile != null)
                 {
-                    //Debug.Log("Tile (" + x + "," + y + ")");
-                    // Serialize Here
-                    //Debug.Log(JsonUtility.ToJson(new TileSerialize(x,y,"ground")));
                     tileSerializes.tiles.Add(new TileSerialize(x, y, "ground"));
                 }
             }
         }
 
+        /*
         foreach(TileSerialize tile in tileSerializes.tiles)
         {
-            Debug.Log(JsonUtility.ToJson(tile));
+            //Debug.Log(JsonUtility.ToJson(tile));
+            Debug.Log("(" + tile.x + "," + tile.y + "): index=" + tile.x + tile.y * 71);
         }
+        */
+        string serializedTileJson = JsonUtility.ToJson(tileSerializes);
 
-        //TileSerialize[] arr = tileSerializes.tiles.ToArray();
-        //string listToJson = JsonHelper.ToJson(arr);
         Debug.Log(tileSerializes.tiles.Count);
-        //Debug.Log(arr.Length);
-        //Debug.Log(JsonUtility.ToJson(arr));
-        Debug.Log(JsonUtility.ToJson(tileSerializes, true));
-        //Debug.Log(JsonUtility.ToJson(tileSerializes.ToArray()));
+        Debug.Log(serializedTileJson);
+
+        try
+        {
+            System.IO.File.WriteAllText("Saved_Levels/level_test.txt", serializedTileJson);
+        } catch (System.Exception ex)
+        {
+            Debug.LogError(ex.StackTrace);
+        }
     }
 
     [Serializable]
