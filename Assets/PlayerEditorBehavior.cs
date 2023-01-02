@@ -222,23 +222,13 @@ public class PlayerEditorBehavior : MonoBehaviour
     // Serialize Box 0,0 - 71,25 into json or something like that.
     private void SerializeCurrentLevel()
     {
-
-        Collider2D[] colliders = Physics2D.OverlapBoxAll(position, size, 0f);
-        foreach(Collider2D collider in colliders)
-        {
-            if(collider.tag == "Checkpoint")
-            {
-                Debug.Log("name:"+collider.name+", tag:"+collider.tag);
-            }
-        }
-
-        //gameManager.serializeCurrentLevel();
+        gameManager.serializeCurrentLevel();
     }
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = UnityEngine.Color.red;
         Gizmos.DrawWireCube(position, size);
-
     }
 
     private void DeserializeLevelFile(string filepath)

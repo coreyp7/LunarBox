@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
@@ -121,13 +124,29 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        /*
-        foreach(TileSerialize tile in tileSerializes.tiles)
+        Vector2 position = new Vector2(17.75f, 6.25f);
+        Vector2 size = new Vector2(34.5f, 12.5f);
+
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(position, size, 0f);
+        foreach (Collider2D collider in colliders)
         {
-            //Debug.Log(JsonUtility.ToJson(tile));
-            Debug.Log("(" + tile.x + "," + tile.y + "): index=" + tile.x + tile.y * 71);
+            if (collider.tag == "Checkpoint")
+            {
+                Debug.Log("collider pos changed: ("+collider.transform.position+")" +
+                    "to ("+ (int)collider.transform.position.x+","+ 
+                    (int)collider.transform.position.y+")");
+
+                tileSerializes.tiles.Add(new TileSerialize(
+                    (int)collider.transform.position.x,
+                    (int)collider.transform.position.y,
+                    "checkpoint"));
+                //checkpoints.Add(collider.GameObject());
+            }
         }
-        */
+
+        // TODO: get all checkpoints in the level.
+        // Convert them to TileSerialize objects and put into list.
+
         string serializedTileJson = JsonUtility.ToJson(tileSerializes);
 
         Debug.Log(tileSerializes.tiles.Count);
@@ -150,6 +169,10 @@ public class GameManager : MonoBehaviour
 
         foreach(TileSerialize tile in deserializedTileList.tiles)
         {
+            // Sketchy casting conversion.
+            // Originally TileSerialize had integer cords (since tiles
+            // are always going to be ints), but changed to floats so
+            // that we can use them with checkpoints
             Vector3Int tilePosition = new(tile.x, tile.y);
 
             switch (tile.type)
