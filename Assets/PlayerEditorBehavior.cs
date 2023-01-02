@@ -207,12 +207,22 @@ public class PlayerEditorBehavior : MonoBehaviour
         {
             SerializeCurrentLevel();
         }
+
+        if (vDown)
+        {
+            DeserializeLevelFile("Saved_Levels/level_test.txt");
+        }
     }
 
     // Serialize Box 0,0 - 71,25 into json or something like that.
     private void SerializeCurrentLevel()
     {
         gameManager.serializeCurrentLevel();
+    }
+
+    private void DeserializeLevelFile(string filepath)
+    {
+        gameManager.deserializeLevelFile(filepath);
     }
 
     private void DetectAlphaNumericKeyDown()

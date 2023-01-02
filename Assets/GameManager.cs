@@ -9,6 +9,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Tilemap groundTilemap;
 
+    [SerializeField]
+    private TileBase groundTile;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +25,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Serialize Box 0,0 - 71,25 into json or something like that.
-    public async void serializeCurrentLevel()
+    public void serializeCurrentLevel()
     {
         BoundsInt box = new BoundsInt(0, 0, 0, 71, 25, 1);
 
@@ -61,6 +64,21 @@ public class GameManager : MonoBehaviour
         } catch (System.Exception ex)
         {
             Debug.LogError(ex.StackTrace);
+        }
+    }
+
+    public void deserializeLevelFile(string filepath)
+    {
+        string json = System.IO.File.ReadAllText(filepath);
+
+        TileList deserializedTileList = JsonUtility.FromJson<TileList>(json);
+
+        // Loop through tilelist
+        //      place this tile in the ground tilemap by its cords
+
+        foreach(TileSerialize tile in deserializedTileList.tiles)
+        {
+            groundTilemap.SetTile(new Vector3Int(tile.x, tile.y), groundTile);
         }
     }
 
