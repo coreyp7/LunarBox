@@ -45,6 +45,12 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private TileBase forceRightTile;
 
+    [SerializeField]
+    private GameObject checkpointContainer;
+
+    [SerializeField]
+    private GameObject checkpointPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -124,6 +130,9 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // Get all checkpoints in the level area.
+        // Convert them to TileSerialize objects and put into list.
+
         Vector2 position = new Vector2(17.75f, 6.25f);
         Vector2 size = new Vector2(34.5f, 12.5f);
 
@@ -137,15 +146,12 @@ public class GameManager : MonoBehaviour
                     (int)collider.transform.position.y+")");
 
                 tileSerializes.tiles.Add(new TileSerialize(
-                    (int)collider.transform.position.x,
-                    (int)collider.transform.position.y,
+                    collider.transform.position.x,
+                    collider.transform.position.y,
                     "checkpoint"));
                 //checkpoints.Add(collider.GameObject());
             }
         }
-
-        // TODO: get all checkpoints in the level.
-        // Convert them to TileSerialize objects and put into list.
 
         string serializedTileJson = JsonUtility.ToJson(tileSerializes);
 
@@ -169,11 +175,12 @@ public class GameManager : MonoBehaviour
 
         foreach(TileSerialize tile in deserializedTileList.tiles)
         {
-            // Sketchy casting conversion.
+            // Sketchy casting from float to int.
             // Originally TileSerialize had integer cords (since tiles
             // are always going to be ints), but changed to floats so
-            // that we can use them with checkpoints
-            Vector3Int tilePosition = new(tile.x, tile.y);
+            // that we can use them with checkpoints (which do not use
+            // the position of the tilemaps, uses regular global pos.
+            Vector3Int tilePosition = new((int)tile.x, (int)tile.y);
 
             switch (tile.type)
             {
@@ -195,6 +202,12 @@ public class GameManager : MonoBehaviour
                 case "forceright":
                     forceRightTilemap.SetTile(tilePosition, forceRightTile);
                     break;
+                case "checkpoint":
+                    GameObject newCheckpoint = Instantiate(checkpointPrefab, 
+                        new Vector2(tile.x, tile.y), 
+                        Quaternion.identity);
+                    newCheckpoint.transform.parent = checkpointContainer.transform;
+                    break;
             }
         }
     }
@@ -202,15 +215,15 @@ public class GameManager : MonoBehaviour
     [Serializable]
     public class TileSerialize
     {
-        public TileSerialize(int x, int y, string type)
+        public TileSerialize(float x, float y, string type)
         {
             this.x = x;
             this.y = y;
             this.type = type;
         }
 
-        public int x;
-        public int y;
+        public float x;
+        public float y;
         public string type;
 
     }
