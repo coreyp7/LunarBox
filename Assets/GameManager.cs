@@ -90,6 +90,34 @@ public class GameManager : MonoBehaviour
                     tileSerializes.tiles.Add(new TileSerialize(x, y, "hazard"));
                     continue;
                 }
+
+                tile = forceUpTiles[index];
+                if (tile != null)
+                {
+                    tileSerializes.tiles.Add(new TileSerialize(x, y, "forceup"));
+                    continue;
+                }
+
+                tile = forceDownTiles[index];
+                if (tile != null)
+                {
+                    tileSerializes.tiles.Add(new TileSerialize(x, y, "forcedown"));
+                    continue;
+                }
+
+                tile = forceLeftTiles[index];
+                if (tile != null)
+                {
+                    tileSerializes.tiles.Add(new TileSerialize(x, y, "forceleft"));
+                    continue;
+                }
+
+                tile = forceRightTiles[index];
+                if (tile != null)
+                {
+                    tileSerializes.tiles.Add(new TileSerialize(x, y, "forceright"));
+                    continue;
+                }
             }
         }
 
@@ -125,12 +153,28 @@ public class GameManager : MonoBehaviour
 
         foreach(TileSerialize tile in deserializedTileList.tiles)
         {
-            if(tile.type == "ground")
+            Vector3Int tilePosition = new(tile.x, tile.y);
+
+            switch (tile.type)
             {
-                groundTilemap.SetTile(new Vector3Int(tile.x, tile.y), groundTile);
-            } else if(tile.type == "hazard")
-            {
-                hazardTilemap.SetTile(new Vector3Int(tile.x, tile.y), hazardTile);
+                case "ground":
+                    groundTilemap.SetTile(tilePosition, groundTile);
+                    break;
+                case "hazard":
+                    hazardTilemap.SetTile(tilePosition, hazardTile);
+                    break;
+                case "forceup":
+                    forceUpTilemap.SetTile(tilePosition, forceUpTile);
+                    break;
+                case "forcedown":
+                    forceDownTilemap.SetTile(tilePosition, forceDownTile);
+                    break;
+                case "forceleft":
+                    forceLeftTilemap.SetTile(tilePosition, forceLeftTile);
+                    break;
+                case "forceright":
+                    forceRightTilemap.SetTile(tilePosition, forceRightTile);
+                    break;
             }
         }
     }
