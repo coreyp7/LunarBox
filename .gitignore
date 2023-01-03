@@ -96,5 +96,6 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-Assets/Scenes/SampleScene.unity
-Assets/Scenes/SampleScene.unity
+
+Assets/Scenes/*
+Saved_Levels/*
