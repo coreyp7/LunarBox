@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
      */
     private Rigidbody2D rb;
 
+    [SerializeField]
+    private GameManager gameManager;
+
 
     // default: 7
     [SerializeField]

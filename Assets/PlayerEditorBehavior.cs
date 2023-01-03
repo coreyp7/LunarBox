@@ -1,10 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 /**
  * Things left to do in here:
@@ -50,6 +52,9 @@ public class PlayerEditorBehavior : MonoBehaviour
     private Boolean Alpha4Down;
     private Boolean Alpha5Down;
     private Boolean Alpha6Down;
+
+    private Boolean vDown;
+    private Boolean cDown;
 
 
     private Boolean beingHandled;
@@ -114,6 +119,9 @@ public class PlayerEditorBehavior : MonoBehaviour
     [SerializeField]
     private GameObject checkpointContainer;
 
+    [SerializeField]
+    private GameManager gameManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -170,6 +178,9 @@ public class PlayerEditorBehavior : MonoBehaviour
         Alpha5Down = Input.GetKeyDown(KeyCode.Alpha5);
         Alpha6Down = Input.GetKeyDown(KeyCode.Alpha6);
 
+        cDown = Input.GetKeyDown(KeyCode.C);
+        vDown = Input.GetKeyDown(KeyCode.V);
+
         // Change tile type when user selects new one
         /*
         if (Input.GetKeyDown(KeyCode.N))
@@ -193,6 +204,36 @@ public class PlayerEditorBehavior : MonoBehaviour
         {
             StartCoroutine(WaitCoroutine());
         }
+
+        if (cDown)
+        {
+            SerializeCurrentLevel();
+        }
+
+        if (vDown)
+        {
+            DeserializeLevelFile("Saved_Levels/level_test.txt");
+        }
+    }
+
+    private Vector2 position = new Vector2(17.75f, 6.25f);
+    private Vector2 size = new Vector2(34.5f, 12.5f);
+
+    // Serialize Box 0,0 - 71,25 into json or something like that.
+    private void SerializeCurrentLevel()
+    {
+        gameManager.serializeCurrentLevel();
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = UnityEngine.Color.red;
+        Gizmos.DrawWireCube(position, size);
+    }
+
+    private void DeserializeLevelFile(string filepath)
+    {
+        gameManager.deserializeLevelFile(filepath);
     }
 
     private void DetectAlphaNumericKeyDown()
@@ -287,7 +328,6 @@ public class PlayerEditorBehavior : MonoBehaviour
         }
         else if (currentTileType == TileType.Checkpoint)
         {
-            //GameObject newCheckpoint = Instantiate(checkpointBlock, this.transform) as GameObject;
             GameObject newCheckpoint = Instantiate(checkpointPrefab, this.transform.position, Quaternion.identity);
             newCheckpoint.transform.parent = checkpointContainer.transform;
         }
