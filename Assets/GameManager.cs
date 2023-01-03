@@ -215,6 +215,9 @@ public class GameManager : MonoBehaviour
     [Serializable]
     public class TileSerialize
     {
+        // Tiles always have integer positions except for checkpoints,
+        // which are treated the same as Tiles during serialization.
+        // So, these have to be floats.
         public TileSerialize(float x, float y, string type)
         {
             this.x = x;
@@ -228,6 +231,10 @@ public class GameManager : MonoBehaviour
 
     }
 
+    /**
+     * This is just a wrapper object for the list of TileSerialize objects
+     * to be serialized.
+     */
     [Serializable]
     public class TileList
     {
