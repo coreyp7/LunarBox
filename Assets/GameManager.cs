@@ -64,6 +64,16 @@ public class GameManager : MonoBehaviour
         
     }
 
+    public void clearCurrentLevel()
+    {
+        groundTilemap.ClearAllTiles();
+        hazardTilemap.ClearAllTiles();
+        forceUpTilemap.ClearAllTiles();
+        forceDownTilemap.ClearAllTiles();
+        forceLeftTilemap.ClearAllTiles();
+        forceRightTilemap.ClearAllTiles();
+    }
+
     // Serialize Box 0,0 - 71,25 into json or something like that.
     public void serializeCurrentLevel()
     {
@@ -174,43 +184,7 @@ public class GameManager : MonoBehaviour
 
         TileList deserializedTileList = JsonUtility.FromJson<TileList>(json);
 
-        foreach (TileSerialize tile in deserializedTileList.tiles)
-        {
-            // Sketchy casting from float to int.
-            // Originally TileSerialize had integer cords (since tiles
-            // are always going to be ints), but changed to floats so
-            // that we can use them with checkpoints (which do not use
-            // the position of the tilemaps, uses regular global pos.
-            Vector3Int tilePosition = new((int)tile.x, (int)tile.y);
-
-            switch (tile.type)
-            {
-                case "ground":
-                    groundTilemap.SetTile(tilePosition, groundTile);
-                    break;
-                case "hazard":
-                    hazardTilemap.SetTile(tilePosition, hazardTile);
-                    break;
-                case "forceup":
-                    forceUpTilemap.SetTile(tilePosition, forceUpTile);
-                    break;
-                case "forcedown":
-                    forceDownTilemap.SetTile(tilePosition, forceDownTile);
-                    break;
-                case "forceleft":
-                    forceLeftTilemap.SetTile(tilePosition, forceLeftTile);
-                    break;
-                case "forceright":
-                    forceRightTilemap.SetTile(tilePosition, forceRightTile);
-                    break;
-                case "checkpoint":
-                    GameObject newCheckpoint = Instantiate(checkpointPrefab,
-                        new Vector2(tile.x, tile.y),
-                        Quaternion.identity);
-                    newCheckpoint.transform.parent = checkpointContainer.transform;
-                    break;
-            }
-        }
+        deserializeLevelFile(deserializedTileList);
     }
 
     public void deserializeLevelFile(TileList tileList)
@@ -245,12 +219,14 @@ public class GameManager : MonoBehaviour
                 case "forceright":
                     forceRightTilemap.SetTile(tilePosition, forceRightTile);
                     break;
+                    /* Checkpoints are dead.
                 case "checkpoint":
                     GameObject newCheckpoint = Instantiate(checkpointPrefab,
                         new Vector2(tile.x, tile.y),
                         Quaternion.identity);
                     newCheckpoint.transform.parent = checkpointContainer.transform;
                     break;
+                    */
             }
         }
     }

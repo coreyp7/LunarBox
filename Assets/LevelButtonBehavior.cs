@@ -17,9 +17,11 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler
         this.tileList = tileList;
     }
 
+    //TODO: Have this call a method in levellistbehavior instead
     public void OnSelect(BaseEventData eventData)
     {
         // name is deceiving: loads tiles where they should be.
+        gameManager.clearCurrentLevel();
         gameManager.deserializeLevelFile(tileList);
     }
 
