@@ -213,6 +213,48 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void deserializeLevelFile(TileList tileList)
+    {
+
+        foreach (TileSerialize tile in tileList.tiles)
+        {
+            // Sketchy casting from float to int.
+            // Originally TileSerialize had integer cords (since tiles
+            // are always going to be ints), but changed to floats so
+            // that we can use them with checkpoints (which do not use
+            // the position of the tilemaps, uses regular global pos.
+            Vector3Int tilePosition = new((int)tile.x, (int)tile.y);
+
+            switch (tile.type)
+            {
+                case "ground":
+                    groundTilemap.SetTile(tilePosition, groundTile);
+                    break;
+                case "hazard":
+                    hazardTilemap.SetTile(tilePosition, hazardTile);
+                    break;
+                case "forceup":
+                    forceUpTilemap.SetTile(tilePosition, forceUpTile);
+                    break;
+                case "forcedown":
+                    forceDownTilemap.SetTile(tilePosition, forceDownTile);
+                    break;
+                case "forceleft":
+                    forceLeftTilemap.SetTile(tilePosition, forceLeftTile);
+                    break;
+                case "forceright":
+                    forceRightTilemap.SetTile(tilePosition, forceRightTile);
+                    break;
+                case "checkpoint":
+                    GameObject newCheckpoint = Instantiate(checkpointPrefab,
+                        new Vector2(tile.x, tile.y),
+                        Quaternion.identity);
+                    newCheckpoint.transform.parent = checkpointContainer.transform;
+                    break;
+            }
+        }
+    }
+
     public List<TileList> deserializeLevelsDirectory(string dirPath)
     {
         /*

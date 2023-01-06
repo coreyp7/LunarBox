@@ -43,6 +43,8 @@ public class LevelListBehavior : MonoBehaviour
         {
             //Create ui button with prefab, give it level info
             Button newLevelBtn = Instantiate(levelBtnPrefab, this.transform);
+            newLevelBtn.GetComponent<LevelButtonBehavior>().setTileList(levelInfo);
+
             TextMeshProUGUI text = newLevelBtn.GetComponentInChildren<TextMeshProUGUI>();
             text.text = "New Level";
             text.fontSize = 60;
