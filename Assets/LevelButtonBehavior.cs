@@ -19,17 +19,19 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler
     //TODO: Have this call a method in levellistbehavior instead
     public void OnSelect(BaseEventData eventData)
     {
-        // name is deceiving: loads tiles where they should be.
-        gameManager.clearCurrentLevel();
-        gameManager.deserializeLevelFile(tileList);
+        // Load this tileList; tileList corresponding to this button.
+        this.transform.GetComponentInParent<LevelListBehavior>().loadLevel(this.tileList);
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        GameObject obj = GameObject.FindGameObjectWithTag("GameManager");
-        gameManager = obj.GetComponent<GameManager>();
-        Debug.Log("GameManager:" + gameManager);
+        // don't need game manager anymore, but keeping for convenience.
+
+        //GameObject obj = GameObject.FindGameObjectWithTag("GameManager");
+        //gameManager = obj.GetComponent<GameManager>();
+        //Debug.Log("GameManager:" + gameManager);
+
     }
 
     // Update is called once per frame

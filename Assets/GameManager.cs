@@ -81,7 +81,10 @@ public class GameManager : MonoBehaviour
     
     public void serializeCurrentLevel()
     {
-        serializeCurrentLevelToFile(this.currentlyLoadedLevel.name);
+        if(currentlyLoadedLevel != null)
+            serializeCurrentLevelToFile(this.currentlyLoadedLevel.name);
+        else
+            serializeCurrentLevelToFile(FILENAME); // development only
     }
 
     public void serializeCurrentLevelToFile(string levelName)
@@ -188,10 +191,10 @@ public class GameManager : MonoBehaviour
         string json = System.IO.File.ReadAllText("Saved_Levels/"+ levelName);
         TileList deserializedTileList = JsonUtility.FromJson<TileList>(json);
 
-        deserializeLevelFile(deserializedTileList);
+        loadLevel(deserializedTileList);
     }
 
-    public void deserializeLevelFile(TileList tileList)
+    public void loadLevel(TileList tileList)
     {
         this.currentlyLoadedLevel = tileList;
 

@@ -59,7 +59,7 @@ public class LevelListBehavior : MonoBehaviour
         {
             Debug.LogException(nre);
         }
-        gameManager.deserializeLevelFile(levels.First());
+        gameManager.loadLevel(levels.First());
     }
 
     // Update is called once per frame
@@ -67,4 +67,15 @@ public class LevelListBehavior : MonoBehaviour
     {
         
     }
+
+    /**
+     * Clear the current level tilemaps and load new level
+     * from TileList object.
+     */
+    public void loadLevel(TileList tileList)
+    {
+        gameManager.clearCurrentLevel();
+        gameManager.loadLevel(tileList);
+    }
+
 }
