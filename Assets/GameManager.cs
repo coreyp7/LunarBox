@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using Unity.VisualScripting;
@@ -10,6 +11,7 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour
 {
+
     [SerializeField]
     private string FILENAME;
 
@@ -55,17 +57,31 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject checkpointPrefab;
 
-    private TileList currentlyLoadedLevel;
+    [SerializeField]
+    public static TileList currentlyLoadedLevel;
 
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
     void Update()
     {
+        
+    }
+
+    private void Awake()
+    {
+        //DontDestroyOnLoad(transform.gameObject);
+        /*
+        DontDestroyOnLoad(groundTilemap);
+        DontDestroyOnLoad(hazardTilemap);
+        DontDestroyOnLoad(forceUpTilemap);
+        DontDestroyOnLoad(forceDownTilemap);
+        DontDestroyOnLoad(forceLeftTilemap);
+        DontDestroyOnLoad(forceRightTilemap);
+        */
         
     }
 
@@ -82,7 +98,7 @@ public class GameManager : MonoBehaviour
     public void serializeCurrentLevel()
     {
         if(currentlyLoadedLevel != null)
-            serializeCurrentLevelToFile(this.currentlyLoadedLevel.name);
+            serializeCurrentLevelToFile(currentlyLoadedLevel.name);
         else
             serializeCurrentLevelToFile(FILENAME); // development only
     }
@@ -103,15 +119,15 @@ public class GameManager : MonoBehaviour
 
         TileList tileSerializes = new TileList(); // list of TileSerialized objects
 
-        if (this.currentlyLoadedLevel != null) // DEVELOPMENT ONLY
+        if (currentlyLoadedLevel != null) // DEVELOPMENT ONLY
         {
-            if (this.currentlyLoadedLevel.name != "")
+            if (currentlyLoadedLevel.name != "")
             {
-                tileSerializes.name = this.currentlyLoadedLevel.name;
+                tileSerializes.name = currentlyLoadedLevel.name;
             }
             else
             {
-                tileSerializes.name = "example name";
+                tileSerializes.name = this.FILENAME;
             }
         }
         else
@@ -196,7 +212,7 @@ public class GameManager : MonoBehaviour
 
     public void loadLevel(TileList tileList)
     {
-        this.currentlyLoadedLevel = tileList;
+        currentlyLoadedLevel = tileList;
 
         foreach (TileSerialize tile in tileList.tiles)
         {
@@ -254,6 +270,10 @@ public class GameManager : MonoBehaviour
         return levels;
     }
 
+    public void setCurrentLevel(TileList tileList)
+    {
+        currentlyLoadedLevel = tileList;
+    }
 }
 
 /*

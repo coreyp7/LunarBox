@@ -4,12 +4,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class LevelButtonBehavior : MonoBehaviour, ISelectHandler
+public class LevelButtonBehavior : MonoBehaviour, ISelectHandler, IPointerClickHandler
 {
     private TileList tileList;
 
-    [SerializeField]
-    private GameManager gameManager;
 
     public void setTileList(TileList tileList)
     {
@@ -22,6 +20,8 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler
         // Load this tileList; tileList corresponding to this button.
         this.transform.GetComponentInParent<LevelListBehavior>().loadLevel(this.tileList);
     }
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -40,5 +40,8 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler
         
     }
 
-
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        this.transform.GetComponentInParent<LevelListBehavior>().openInEditor(this.tileList);
+    }
 }

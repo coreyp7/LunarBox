@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LevelListBehavior : MonoBehaviour
@@ -76,6 +77,12 @@ public class LevelListBehavior : MonoBehaviour
     {
         gameManager.clearCurrentLevel();
         gameManager.loadLevel(tileList);
+    }
+
+    public void openInEditor(TileList tileList)
+    {
+        gameManager.setCurrentLevel(tileList);
+        SceneManager.LoadScene("LevelEditor");
     }
 
 }

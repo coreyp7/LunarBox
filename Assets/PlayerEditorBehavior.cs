@@ -136,7 +136,18 @@ public class PlayerEditorBehavior : MonoBehaviour
         tileSelectionList.Add(TileType.Checkpoint);
         tileSelectionListCurrentIndex = 0;
 
+        // Load the TileList object set: GameManager.currentlyLoadedLevel.
+        // this should be set before loading this scene. Otherwise, it will
+        // load the generic "Test" level in the scene.
+        try
+        {
+            gameManager.clearCurrentLevel(); // clear test level, could get rid of in final release.
+            gameManager.loadLevel(GameManager.currentlyLoadedLevel);
 
+        } catch (NullReferenceException nre)
+        {
+            Debug.Log("NRE in PlayerEditorBehavior");
+        }
     }
     
     private void selectNextTileType()
@@ -212,7 +223,8 @@ public class PlayerEditorBehavior : MonoBehaviour
 
         if (vDown)
         {
-            DeserializeLevelFile("Saved_Levels/level_test.txt");
+            // level editor deserialization testing only
+            //DeserializeLevelFile("Saved_Levels/level_test.txt");
         }
     }
 
