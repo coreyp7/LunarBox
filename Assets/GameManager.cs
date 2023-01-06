@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -173,7 +174,7 @@ public class GameManager : MonoBehaviour
 
         TileList deserializedTileList = JsonUtility.FromJson<TileList>(json);
 
-        foreach(TileSerialize tile in deserializedTileList.tiles)
+        foreach (TileSerialize tile in deserializedTileList.tiles)
         {
             // Sketchy casting from float to int.
             // Originally TileSerialize had integer cords (since tiles
@@ -203,8 +204,8 @@ public class GameManager : MonoBehaviour
                     forceRightTilemap.SetTile(tilePosition, forceRightTile);
                     break;
                 case "checkpoint":
-                    GameObject newCheckpoint = Instantiate(checkpointPrefab, 
-                        new Vector2(tile.x, tile.y), 
+                    GameObject newCheckpoint = Instantiate(checkpointPrefab,
+                        new Vector2(tile.x, tile.y),
                         Quaternion.identity);
                     newCheckpoint.transform.parent = checkpointContainer.transform;
                     break;
@@ -212,37 +213,26 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    [Serializable]
-    public class TileSerialize
+    public List<TileList> deserializeLevelsDirectory(string dirPath)
     {
-        // Tiles always have integer positions except for checkpoints,
-        // which are treated the same as Tiles during serialization.
-        // So, these have to be floats.
-        public TileSerialize(float x, float y, string type)
+        /*
+        string json = System.IO.File.ReadAllText("Saved_Levels/level_test.txt");
+        TileList deserializedTileList = JsonUtility.FromJson<TileList>(json);
+        Debug.Log(deserializedTileList);
+        */
+
+        
+        string[] levelFiles = Directory.GetFiles(dirPath);
+        List<TileList> levels = new List<TileList>();
+
+        foreach(string levelFile in levelFiles)
         {
-            this.x = x;
-            this.y = y;
-            this.type = type;
+            string currJson = System.IO.File.ReadAllText(levelFile);
+            TileList deserializedTileList = JsonUtility.FromJson<TileList>(currJson);
+            levels.Add(deserializedTileList);
         }
-
-        public float x;
-        public float y;
-        public string type;
-
+        
+        return levels;
     }
 
-    /**
-     * This is just a wrapper object for the list of TileSerialize objects
-     * to be serialized.
-     */
-    [Serializable]
-    public class TileList
-    {
-        public List<TileSerialize> tiles;
-
-        public TileList()
-        {
-            this.tiles = new List<TileSerialize>();
-        }
-    }
 }
