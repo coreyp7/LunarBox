@@ -6,7 +6,6 @@ using UnityEngine.EventSystems;
 
 public class LevelButtonBehavior : MonoBehaviour, ISelectHandler
 {
-    [SerializeField]
     private TileList tileList;
 
     [SerializeField]

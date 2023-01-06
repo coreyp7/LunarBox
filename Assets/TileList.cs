@@ -8,17 +8,19 @@ using UnityEngine;
 public class TileList
 {
     public List<TileSerialize> tiles;
-    /*
-     * info stuff like:
-     * name,
-     * date created,
-     * date last edited,
-     * etc.
-     */
+
+    public string name;
+
+    //date created...
+
+    //last edited...
+
+    //etc....
 
     public TileList()
     {
         this.tiles = new List<TileSerialize>();
+        this.name = "";
     }
 }
 

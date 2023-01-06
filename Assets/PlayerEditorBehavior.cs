@@ -231,9 +231,9 @@ public class PlayerEditorBehavior : MonoBehaviour
         Gizmos.DrawWireCube(position, size);
     }
 
-    private void DeserializeLevelFile(string filepath)
+    private void DeserializeLevelFile(string levelName)
     {
-        gameManager.deserializeLevelFile(filepath);
+        gameManager.deserializeLevelFile(levelName);
     }
 
     private void DetectAlphaNumericKeyDown()

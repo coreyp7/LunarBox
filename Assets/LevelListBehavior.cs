@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -37,7 +39,6 @@ public class LevelListBehavior : MonoBehaviour
 
         List<TileList> levels = gameManager.deserializeLevelsDirectory("Saved_Levels/");
         List<Button> buttons = new List<Button>();
-        Debug.Log(levels);
 
         foreach(TileList levelInfo in levels)
         {
@@ -46,13 +47,19 @@ public class LevelListBehavior : MonoBehaviour
             newLevelBtn.GetComponent<LevelButtonBehavior>().setTileList(levelInfo);
 
             TextMeshProUGUI text = newLevelBtn.GetComponentInChildren<TextMeshProUGUI>();
-            text.text = "New Level";
+            text.text = levelInfo.name;
             text.fontSize = 60;
 
             buttons.Add(newLevelBtn);
         }
-
-        eventSystem.SetSelectedGameObject(buttons.ElementAt(0).gameObject);
+        try
+        {
+            eventSystem.SetSelectedGameObject(buttons.First().GameObject()); // ????????????
+        } catch (NullReferenceException nre)
+        {
+            Debug.LogException(nre);
+        }
+        gameManager.deserializeLevelFile(levels.First());
     }
 
     // Update is called once per frame
