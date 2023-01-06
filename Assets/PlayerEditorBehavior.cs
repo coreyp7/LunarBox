@@ -139,9 +139,12 @@ public class PlayerEditorBehavior : MonoBehaviour
         // Load the TileList object set: GameManager.currentlyLoadedLevel.
         // this should be set before loading this scene. Otherwise, it will
         // load the generic "Test" level in the scene.
+
+        if(GameManager.currentlyLoadedLevel != null)
+            gameManager.clearCurrentLevel(); // clear test level, could get rid of in final release.
+
         try
         {
-            gameManager.clearCurrentLevel(); // clear test level, could get rid of in final release.
             gameManager.loadLevel(GameManager.currentlyLoadedLevel);
 
         } catch (NullReferenceException nre)

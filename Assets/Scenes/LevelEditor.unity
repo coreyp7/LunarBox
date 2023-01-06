@@ -721,7 +721,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ab83a81f53c0db4694049a53ca7fa7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FILENAME: level_2
+  FILENAME: level_3
   groundTilemap: {fileID: 896483838}
   groundTile: {fileID: 11400000, guid: cb392fc5365b41840ba532c2dff61eed, type: 2}
   hazardTilemap: {fileID: 830781810}
@@ -736,9 +736,6 @@ MonoBehaviour:
   forceRightTile: {fileID: 11400000, guid: f705ab9c9b9e6b548b98d8a93b38837f, type: 2}
   checkpointContainer: {fileID: 812151278}
   checkpointPrefab: {fileID: 181624078276501089, guid: db778c66c02869c49be5236122e260b8, type: 3}
-  currentlyLoadedLevel:
-    tiles: []
-    name: 
 --- !u!4 &623629482
 Transform:
   m_ObjectHideFlags: 0

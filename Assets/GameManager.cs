@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 using UnityEngine.UIElements;
 
@@ -273,6 +274,12 @@ public class GameManager : MonoBehaviour
     public void setCurrentLevel(TileList tileList)
     {
         currentlyLoadedLevel = tileList;
+    }
+
+    public static void openLevelInEditor(TileList tileList)
+    {
+        currentlyLoadedLevel = tileList;
+        SceneManager.LoadScene("LevelEditor");
     }
 }
 

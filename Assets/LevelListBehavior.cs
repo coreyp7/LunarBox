@@ -81,8 +81,7 @@ public class LevelListBehavior : MonoBehaviour
 
     public void openInEditor(TileList tileList)
     {
-        gameManager.setCurrentLevel(tileList);
-        SceneManager.LoadScene("LevelEditor");
+        GameManager.openLevelInEditor(tileList);
     }
 
 }

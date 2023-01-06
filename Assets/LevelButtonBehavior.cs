@@ -4,9 +4,11 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class LevelButtonBehavior : MonoBehaviour, ISelectHandler, IPointerClickHandler
+public class LevelButtonBehavior : MonoBehaviour, ISelectHandler //, IPointerClickHandler
 {
     private TileList tileList;
+
+    private LevelListBehavior list;
 
 
     public void setTileList(TileList tileList)
@@ -18,7 +20,7 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler, IPointerClickH
     public void OnSelect(BaseEventData eventData)
     {
         // Load this tileList; tileList corresponding to this button.
-        this.transform.GetComponentInParent<LevelListBehavior>().loadLevel(this.tileList);
+        list.loadLevel(this.tileList);
     }
 
     
@@ -31,7 +33,7 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler, IPointerClickH
         //GameObject obj = GameObject.FindGameObjectWithTag("GameManager");
         //gameManager = obj.GetComponent<GameManager>();
         //Debug.Log("GameManager:" + gameManager);
-
+        list = this.transform.GetComponentInParent<LevelListBehavior>();
     }
 
     // Update is called once per frame
@@ -40,8 +42,16 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler, IPointerClickH
         
     }
 
+    /*
     public void OnPointerClick(PointerEventData eventData)
     {
-        this.transform.GetComponentInParent<LevelListBehavior>().openInEditor(this.tileList);
+        list.openInEditor(this.tileList);
+    }
+    */
+
+    public void LoadInEditor()
+    {
+        list.openInEditor(this.tileList);
+        //GameManager.openLevelInEditor(this.tileList);
     }
 }
