@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class LevelListBehavior : MonoBehaviour
@@ -10,6 +13,9 @@ public class LevelListBehavior : MonoBehaviour
 
     [SerializeField]
     private Button levelBtnPrefab;
+
+    [SerializeField]
+    private EventSystem eventSystem;
 
     // Start is called before the first frame update
     void Start()
@@ -30,15 +36,21 @@ public class LevelListBehavior : MonoBehaviour
          */
 
         List<TileList> levels = gameManager.deserializeLevelsDirectory("Saved_Levels/");
+        List<Button> buttons = new List<Button>();
         Debug.Log(levels);
 
         foreach(TileList levelInfo in levels)
         {
             //Create ui button with prefab, give it level info
+            Button newLevelBtn = Instantiate(levelBtnPrefab, this.transform);
+            TextMeshProUGUI text = newLevelBtn.GetComponentInChildren<TextMeshProUGUI>();
+            text.text = "New Level";
+            text.fontSize = 60;
 
-
-            //set its transform to hardcoded location
+            buttons.Add(newLevelBtn);
         }
+
+        eventSystem.SetSelectedGameObject(buttons.ElementAt(0).gameObject);
     }
 
     // Update is called once per frame
