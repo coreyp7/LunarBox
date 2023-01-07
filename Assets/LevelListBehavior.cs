@@ -139,6 +139,9 @@ public class LevelListBehavior : MonoBehaviour
 
     public void moveUp()
     {
+        if (buttonsSelectedIndex == 0)
+            return;
+
         Vector2 size = levelBtnPrefab.GetComponent<RectTransform>().sizeDelta;
         this.transform.position = new Vector2(this.transform.position.x,
             this.transform.position.y - size.y);
@@ -151,6 +154,9 @@ public class LevelListBehavior : MonoBehaviour
 
     public void moveDown()
     {
+        if (buttonsSelectedIndex == buttons.Count-1)
+            return;
+
         Vector2 size = levelBtnPrefab.GetComponent<RectTransform>().sizeDelta;
         this.transform.position = new Vector2(this.transform.position.x,
             this.transform.position.y + size.y);
