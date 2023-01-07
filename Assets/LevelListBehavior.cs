@@ -8,6 +8,9 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Button = UnityEngine.UI.Button;
+using Cursor = UnityEngine.Cursor;
 
 public class LevelListBehavior : MonoBehaviour
 {
@@ -20,9 +23,34 @@ public class LevelListBehavior : MonoBehaviour
     [SerializeField]
     private EventSystem eventSystem;
 
+    private Boolean wDown;
+
+    private Boolean aDown;
+
+    private Boolean sDown;
+
+    private Boolean dDown;
+
+    private Boolean beingHandled;
+
+    private Button firstTileListBtn;
+
+    private List<Button> buttons;
+
+    private int buttonsSelectedIndex;
+
+
+    //[SerializeField]
+    //public ScrollRect scrollView;
+
     // Start is called before the first frame update
     void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        buttonsSelectedIndex = 0;
+        buttons = new List<Button>();
+
         /*
          * 1. Call method deserializeLevelsDirectory(dirPath) in gameManager, which
          * will return a List<TileList> objects of the files in that dir.
@@ -38,8 +66,11 @@ public class LevelListBehavior : MonoBehaviour
          * 
          */
 
+        //scrollView = this.transform.GetComponentInParent<ScrollRect>();
+        //scrollView.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHide;
+
         List<TileList> levels = gameManager.deserializeLevelsDirectory("Saved_Levels/");
-        List<Button> buttons = new List<Button>();
+        //List<Button> buttons = new List<Button>();
 
         foreach(TileList levelInfo in levels)
         {
@@ -53,6 +84,9 @@ public class LevelListBehavior : MonoBehaviour
 
             buttons.Add(newLevelBtn);
         }
+
+        buttons.First().Select();
+
         try
         {
             eventSystem.SetSelectedGameObject(buttons.First().GameObject()); // ????????????
@@ -66,7 +100,20 @@ public class LevelListBehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //if(EventSystem.current.currentSelectedGameObject == null)
+        //{
+        //    EventSystem.current.SetSelectedGameObject(firstTileListBtn.gameObject);
+        //    Debug.Log("cowabunga 1");
+        //}
+
+        wDown = Input.GetKey(KeyCode.W);
+        aDown = Input.GetKey(KeyCode.A);
+        sDown = Input.GetKey(KeyCode.S);
+        dDown = Input.GetKey(KeyCode.D);
+
+        // handle inputs navigating levels
+        if((wDown || aDown || sDown || dDown) && (!beingHandled))
+            StartCoroutine(WaitCoroutine());
     }
 
     /**
@@ -83,5 +130,53 @@ public class LevelListBehavior : MonoBehaviour
     {
         GameManager.openLevelInEditor(tileList);
     }
+
+    public void scrollToButton(VisualElement btn)
+    {
+        //scrollView.ScrollTo(btn);
+        this.transform.GetComponentInParent<ScrollView>().ScrollTo(btn);
+    }
+
+    public void moveUp()
+    {
+        Vector2 size = levelBtnPrefab.GetComponent<RectTransform>().sizeDelta;
+        this.transform.position = new Vector2(this.transform.position.x,
+            this.transform.position.y - size.y);
+        Debug.Log("LevelList y increased by " + size.y);
+
+        //buttons.ElementAt(buttonsSelectedIndex).OnDeselect();
+        buttonsSelectedIndex -= 1;
+        buttons.ElementAt(buttonsSelectedIndex).Select();
+    }
+
+    public void moveDown()
+    {
+        Vector2 size = levelBtnPrefab.GetComponent<RectTransform>().sizeDelta;
+        this.transform.position = new Vector2(this.transform.position.x,
+            this.transform.position.y + size.y);
+        Debug.Log("LevelList y increased by " + size.y);
+
+        //buttons.ElementAt(buttonsSelectedIndex).OnDeselect();
+        buttonsSelectedIndex += 1;
+        buttons.ElementAt(buttonsSelectedIndex).Select();
+        
+    }
+
+    IEnumerator WaitCoroutine()
+    {
+        beingHandled = true;
+        if (wDown)
+        {
+            moveUp();
+        }
+        else if (sDown)
+        {
+            moveDown();
+        }
+        yield return new WaitForSeconds(.1f);
+        beingHandled = false;
+    }
+
+
 
 }

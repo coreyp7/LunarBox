@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class LevelButtonBehavior : MonoBehaviour, ISelectHandler //, IPointerClickHandler
 {
@@ -21,6 +23,8 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler //, IPointerCli
     {
         // Load this tileList; tileList corresponding to this button.
         list.loadLevel(this.tileList);
+
+        //list.scrollToButton(this.transform.GetComponent<VisualElement>());
     }
 
     
