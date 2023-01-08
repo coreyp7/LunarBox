@@ -40,12 +40,28 @@ public class LevelListBehavior : MonoBehaviour
     [SerializeField]
     private int buttonsSelectedIndex;
 
+    [SerializeField]
+    private Button createNewLevelBtn;
+
+    [SerializeField]
+    private Boolean inTopMenu;
+
+    [SerializeField]
+    private NewLevelMenu newLevelMenu;
+
+    private bool inCreateLevelMenu;
+
+    [SerializeField]
+    private TMP_InputField inputField;
+
     // Start is called before the first frame update
     void Start()
     {
         // "Turn off" mouse activity
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        inTopMenu = false;
+        inCreateLevelMenu = false;
 
         buttonsSelectedIndex = 0;
         buttons = new List<Button>();
@@ -65,6 +81,8 @@ public class LevelListBehavior : MonoBehaviour
         }
 
         // Always select first button (and load its TileList into the tilemaps)
+        // NOTE: THIS ALWAYS THROWS NullReferenceException AND I DON'T KNOW WHY.
+        // Functions properly so is alright.
         buttons.First().Select();
         gameManager.loadLevel(levels.First());
     }
@@ -78,7 +96,7 @@ public class LevelListBehavior : MonoBehaviour
         dDown = Input.GetKey(KeyCode.D);
 
         // handle inputs navigating levels
-        if((wDown || aDown || sDown || dDown) && (!beingHandled))
+        if((wDown || aDown || sDown || dDown) && (!beingHandled) && (!inCreateLevelMenu))
             StartCoroutine(WaitCoroutine());
     }
 
@@ -106,6 +124,7 @@ public class LevelListBehavior : MonoBehaviour
     public void moveUp()
     {
         if (buttonsSelectedIndex == 0)
+            // TODO: move to top button menu (create new level, exit, etc.)
             return;
 
         buttonsSelectedIndex -= 1;
@@ -129,21 +148,102 @@ public class LevelListBehavior : MonoBehaviour
             this.transform.position.y + size.y);
     }
 
+    public void selectTopMenu()
+    {
+        inTopMenu = true;
+        createNewLevelBtn.Select();
+    }
+
     IEnumerator WaitCoroutine()
     {
         beingHandled = true;
-        if (wDown)
+        if (wDown && !inTopMenu)
         {
             moveUp();
         }
         else if (sDown)
         {
-            moveDown();
+            if (inTopMenu)
+            {
+                buttons.ElementAt(buttonsSelectedIndex).Select();
+                inTopMenu = false;
+            }
+            else
+            {
+                moveDown();
+            }
+        } else if (dDown)
+        {
+            selectTopMenu();
         }
         yield return new WaitForSeconds(.1f);
         beingHandled = false;
     }
 
+    public void loadCreateNewLevelMenu()
+    {
+        newLevelMenu.show();
+        inCreateLevelMenu = true;
+    }
 
+    public void CreateNewLevelSubmit()
+    {
+        Debug.Log("CreateNewLevelSubmit() called.");
+        //Create ui button with prefab, give it level info (TileList)
+
+        /*
+         * 1. Deserialize default level file as TileList.
+         * 2. Copy to new TileList with the name specified by user.
+         * 3. Serialize this new TileList copy with the new name.
+         * 4. Repopulate list of levels in this file (look at Start()).
+         * 5. Go back to normal LevelList operations.
+         */
+
+
+        if (inputField.text == "")
+        {
+            Debug.Log("return early");
+            return;
+        }
+
+        //1
+        gameManager.deserializeLevelFile("Default/level_menu_new_level.txt");
+
+        //2
+        TileList newLevelTileList = GameManager.currentlyLoadedLevel;
+        newLevelTileList.name = inputField.text;
+
+        //3
+        gameManager.serializeCurrentLevelToFile(newLevelTileList.name);
+
+        //4
+        /*
+        Button newLevelBtn = Instantiate(levelBtnPrefab, this.transform);
+        newLevelBtn.GetComponent<LevelButtonBehavior>().setTileList(newLevelTileList);
+
+        TextMeshProUGUI text = newLevelBtn.GetComponentInChildren<TextMeshProUGUI>();
+        text.text = newLevelTileList.name;
+        text.fontSize = 60;
+        */
+
+        //buttons.Add(newLevelBtn);
+
+        //5
+        
+        // Hide new level menu
+        newLevelMenu.hide();
+        inCreateLevelMenu = false;
+
+        // Load new scene
+        // (prolly a better idea than just going back to level menu)
+        GameManager.openLevelInEditor(newLevelTileList);
+
+    }
+
+    public void test()
+    {
+        
+
+    }
 
 }

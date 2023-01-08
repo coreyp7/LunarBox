@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +38,14 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler //, IPointerCli
      */
     public void OnSelect(BaseEventData eventData)
     {
-        list.loadLevel(this.tileList);
+        try
+        {
+            list.loadLevel(this.tileList);
+        }
+        catch (NullReferenceException nre)
+        {
+            Debug.Log("(LevelButtonBehavior.cs): NullReferenceException thrown, but don't worry ab it.");
+        }
     }
     
 

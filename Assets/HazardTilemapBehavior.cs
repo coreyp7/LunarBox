@@ -21,9 +21,6 @@ public class HazardTilemapBehavior : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Hit lava.");
-        } else
-        {
-            Debug.Log("Something hit lava, but not player...");
         }
     }
 }
