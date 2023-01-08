@@ -40,7 +40,7 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler //, IPointerCli
     {
         try
         {
-            list.loadLevel(this.tileList);
+            list.loadLevelPreview(this.tileList);
             Debug.Log(this.tileList.toString());
         }
         catch (NullReferenceException nre)
@@ -56,7 +56,10 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler //, IPointerCli
      */
     public void LoadInEditor()
     {
-        list.openInEditor(this.tileList);
+        // The GameManager already has this button's TileList as the
+        // currentlyLoadedLevel if this button is selected.
+        // So, this works.
+        GameManager.loadLevelEditor();
     }
 
     // Update is called once per frame

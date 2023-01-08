@@ -76,26 +76,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        //DontDestroyOnLoad(transform.gameObject);
-        /*
-        DontDestroyOnLoad(groundTilemap);
-        DontDestroyOnLoad(hazardTilemap);
-        DontDestroyOnLoad(forceUpTilemap);
-        DontDestroyOnLoad(forceDownTilemap);
-        DontDestroyOnLoad(forceLeftTilemap);
-        DontDestroyOnLoad(forceRightTilemap);
-        */
         
-    }
-
-    public void clearCurrentLevel()
-    {
-        groundTilemap.ClearAllTiles();
-        hazardTilemap.ClearAllTiles();
-        forceUpTilemap.ClearAllTiles();
-        forceDownTilemap.ClearAllTiles();
-        forceLeftTilemap.ClearAllTiles();
-        forceRightTilemap.ClearAllTiles();
     }
     
     public void serializeCurrentLevel()
@@ -106,6 +87,10 @@ public class GameManager : MonoBehaviour
             serializeCurrentLevelToFile(FILENAME); // development only
     }
 
+    /// <summary>
+    /// Serializes currently loaded level into a file (filename specified by levelName in param).
+    /// </summary>
+    /// <param name="levelName"> The name of the level. </param>
     public void serializeCurrentLevelToFile(string levelName)
     {
         BoundsInt box = new BoundsInt(0, 0, 0, 71, 25, 1);
@@ -204,7 +189,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //TODO: Change param to be filename instead of filepath
+    /// <summary>
+    /// Will load the level file (identified by the levelName)
+    /// as the currently loaded level.
+    /// </summary>
+    /// <param name="levelName"></param>
     public void deserializeLevelFile(string levelName)
     {
         string json = System.IO.File.ReadAllText("Saved_Levels/"+ levelName);
@@ -213,7 +202,11 @@ public class GameManager : MonoBehaviour
         loadLevel(deserializedTileList);
     }
 
-    public void loadLevel(TileList tileList)
+    /// <summary>
+    /// Will load a level from the given tileList param.
+    /// </summary>
+    /// <param name="tileList"></param>
+    private void loadLevel(TileList tileList)
     {
         currentlyLoadedLevel = tileList;
 
@@ -258,6 +251,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Will return a list of TileList objects, each of which corresponds to
+    /// each level file.
+    /// </summary>
+    /// <param name="dirPath"> The path to the directory (local unity project).</param>
+    /// <returns></returns>
     public List<TileList> deserializeLevelsDirectory(string dirPath)
     {
         string[] levelFiles = Directory.GetFiles(dirPath);
@@ -273,28 +272,53 @@ public class GameManager : MonoBehaviour
         return levels;
     }
 
-    public TileList deserializeLevelFileReturn(string name)
+    /// <summary>
+    /// Will return a TileList of the file (specified by filepath).
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public TileList deserializeLevelFileReturn(string filepath)
     {
-        string json = System.IO.File.ReadAllText(name);
+        string json = System.IO.File.ReadAllText(filepath);
         TileList tileList = JsonUtility.FromJson<TileList>(json);
         return tileList;
     }
 
+    /// <summary>
+    /// Will set this TileList as the currently loaded level, 
+    /// clear the tilemaps of the previous level, and populate
+    /// the tilemaps with the level.
+    /// </summary>
+    /// <param name="tileList"></param>
     public void setCurrentLevel(TileList tileList)
     {
         currentlyLoadedLevel = tileList;
+        clearAllTilemaps();
+        loadLevel(tileList);
     }
 
-    /**
-     * Will load the tileList param into the currentlyLoadedLevel,
-     * and load the level editor scene.
-     * (currentlyLoadedLevel is static so level editor can get figure
-     * out the TileList to load)
-     */
-    public static void openLevelInEditor(TileList tileList)
+    public TileList getCurrentLevel()
     {
-        currentlyLoadedLevel = tileList;
+        return currentlyLoadedLevel;
+    }
+
+    public static void loadLevelEditor()
+    {
         SceneManager.LoadScene("LevelEditor");
+    }
+
+
+
+    // Private functions. //
+
+    private void clearAllTilemaps()
+    {
+        groundTilemap.ClearAllTiles();
+        hazardTilemap.ClearAllTiles();
+        forceUpTilemap.ClearAllTiles();
+        forceDownTilemap.ClearAllTiles();
+        forceLeftTilemap.ClearAllTiles();
+        forceRightTilemap.ClearAllTiles();
     }
 }
 

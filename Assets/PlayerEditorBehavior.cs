@@ -121,6 +121,15 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     [SerializeField]
     private GameManager gameManager;
+    private void clearAllTilemaps()
+    {
+        groundTilemap.ClearAllTiles();
+        hazardTilemap.ClearAllTiles();
+        forceUpTilemap.ClearAllTiles();
+        forceDownTilemap.ClearAllTiles();
+        forceLeftTilemap.ClearAllTiles();
+        forceRightTilemap.ClearAllTiles();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -140,17 +149,26 @@ public class PlayerEditorBehavior : MonoBehaviour
         // this should be set before loading this scene. Otherwise, it will
         // load the generic "Test" level in the scene.
 
-        if(GameManager.currentlyLoadedLevel != null)
-            gameManager.clearCurrentLevel(); // clear test level, could get rid of in final release.
+        // Shouldn;t need this anymore, since the GameManager.currentlyLoadedLevel should always be set.
+        //if(GameManager.currentlyLoadedLevel != null)
+            //gameManager.clearAllTilemaps(); // clear test level, could get rid of in final release.
 
+        
+        // When this scene is loaded, we have to populate the tilemaps with the
+        // level that is stored in GameManager statically. (clears tilemaps and
+        // populates with GameManager.currentlyLoadedLevel).
+        gameManager.setCurrentLevel(GameManager.currentlyLoadedLevel);
+
+        /* Not sure why this is even here; currentlyLoadedLevel will be set.
         try
         {
-            gameManager.loadLevel(GameManager.currentlyLoadedLevel);
+            gameManager.setCurrentLevel(GameManager.currentlyLoadedLevel);
 
         } catch (NullReferenceException nre)
         {
             Debug.Log("NRE in PlayerEditorBehavior");
         }
+        */
     }
     
     private void selectNextTileType()
