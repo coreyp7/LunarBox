@@ -41,6 +41,7 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler //, IPointerCli
         try
         {
             list.loadLevel(this.tileList);
+            Debug.Log(this.tileList.toString());
         }
         catch (NullReferenceException nre)
         {

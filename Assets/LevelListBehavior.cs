@@ -54,6 +54,8 @@ public class LevelListBehavior : MonoBehaviour
     [SerializeField]
     private TMP_InputField inputField;
 
+    private TileList emptyLevel; // for level editor
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,6 +64,9 @@ public class LevelListBehavior : MonoBehaviour
         Cursor.visible = false;
         inTopMenu = false;
         inCreateLevelMenu = false;
+
+        emptyLevel = gameManager.deserializeLevelFileReturn("Saved_Levels/Default/level_menu_new_level.txt");
+
 
         buttonsSelectedIndex = 0;
         buttons = new List<Button>();
@@ -78,13 +83,16 @@ public class LevelListBehavior : MonoBehaviour
             text.fontSize = 60;
 
             buttons.Add(newLevelBtn);
+            Debug.Log(levelInfo);
         }
 
         // Always select first button (and load its TileList into the tilemaps)
         // NOTE: THIS ALWAYS THROWS NullReferenceException AND I DON'T KNOW WHY.
         // Functions properly so is alright.
-        buttons.First().Select();
+        gameManager.clearCurrentLevel();
+
         gameManager.loadLevel(levels.First());
+        buttons.First().Select();
     }
 
     // Update is called once per frame
@@ -152,6 +160,7 @@ public class LevelListBehavior : MonoBehaviour
     {
         inTopMenu = true;
         createNewLevelBtn.Select();
+        loadLevel(emptyLevel);
     }
 
     IEnumerator WaitCoroutine()
@@ -186,6 +195,10 @@ public class LevelListBehavior : MonoBehaviour
         inCreateLevelMenu = true;
     }
 
+    /**
+     * Called by the InputField in the 'CreateNewLevelMenu'  when user
+     * presses enter.
+     */
     public void CreateNewLevelSubmit()
     {
         Debug.Log("CreateNewLevelSubmit() called.");
@@ -209,14 +222,15 @@ public class LevelListBehavior : MonoBehaviour
         //1
         gameManager.deserializeLevelFile("Default/level_menu_new_level.txt");
 
-        //2
+        //2: make a copy of the default empty level
         TileList newLevelTileList = GameManager.currentlyLoadedLevel;
         newLevelTileList.name = inputField.text;
 
-        //3
+        //3: save this TileList copy as its own file, with the user's supplied name
         gameManager.serializeCurrentLevelToFile(newLevelTileList.name);
 
-        //4
+        //4: This was when I wanted to stay on the level menu after creating.
+        // Decided to just send the user to the level editor instead.
         /*
         Button newLevelBtn = Instantiate(levelBtnPrefab, this.transform);
         newLevelBtn.GetComponent<LevelButtonBehavior>().setTileList(newLevelTileList);
@@ -225,11 +239,8 @@ public class LevelListBehavior : MonoBehaviour
         text.text = newLevelTileList.name;
         text.fontSize = 60;
         */
-
         //buttons.Add(newLevelBtn);
 
-        //5
-        
         // Hide new level menu
         newLevelMenu.hide();
         inCreateLevelMenu = false;

@@ -61,9 +61,11 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public static TileList currentlyLoadedLevel;
 
+
     // Start is called before the first frame update
     void Start()
     {
+
     }
 
     // Update is called once per frame
@@ -269,6 +271,13 @@ public class GameManager : MonoBehaviour
         }
         
         return levels;
+    }
+
+    public TileList deserializeLevelFileReturn(string name)
+    {
+        string json = System.IO.File.ReadAllText(name);
+        TileList tileList = JsonUtility.FromJson<TileList>(json);
+        return tileList;
     }
 
     public void setCurrentLevel(TileList tileList)
