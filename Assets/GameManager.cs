@@ -276,6 +276,12 @@ public class GameManager : MonoBehaviour
         currentlyLoadedLevel = tileList;
     }
 
+    /**
+     * Will load the tileList param into the currentlyLoadedLevel,
+     * and load the level editor scene.
+     * (currentlyLoadedLevel is static so level editor can get figure
+     * out the TileList to load)
+     */
     public static void openLevelInEditor(TileList tileList)
     {
         currentlyLoadedLevel = tileList;

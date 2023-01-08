@@ -37,44 +37,23 @@ public class LevelListBehavior : MonoBehaviour
 
     private List<Button> buttons;
 
+    [SerializeField]
     private int buttonsSelectedIndex;
-
-
-    //[SerializeField]
-    //public ScrollRect scrollView;
 
     // Start is called before the first frame update
     void Start()
     {
+        // "Turn off" mouse activity
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
         buttonsSelectedIndex = 0;
         buttons = new List<Button>();
 
-        /*
-         * 1. Call method deserializeLevelsDirectory(dirPath) in gameManager, which
-         * will return a List<TileList> objects of the files in that dir.
-         * 2. Loop through that list and create a List of UI buttons. These will
-         * contain information of that level (date created, etc) but for now
-         * will have no info, just load level (maybe add name or something like that).
-         *          - These buttons should load the tilemap with that levels tiles
-         *              on selection, there should be a method for that???
-         * 3. Place all of these buttons manually inside the level list empty object.
-         * 4. When a user presses up/down, the next/prev btn should be selected, and
-         * the LevelList object should be shifted by a hardcoded amount 
-         * (height of the button?)
-         * 
-         */
-
-        //scrollView = this.transform.GetComponentInParent<ScrollRect>();
-        //scrollView.verticalScrollbarVisibility = ScrollRect.ScrollbarVisibility.AutoHide;
-
         List<TileList> levels = gameManager.deserializeLevelsDirectory("Saved_Levels/");
-        //List<Button> buttons = new List<Button>();
-
         foreach(TileList levelInfo in levels)
         {
-            //Create ui button with prefab, give it level info
+            //Create ui button with prefab, give it level info (TileList)
             Button newLevelBtn = Instantiate(levelBtnPrefab, this.transform);
             newLevelBtn.GetComponent<LevelButtonBehavior>().setTileList(levelInfo);
 
@@ -85,27 +64,14 @@ public class LevelListBehavior : MonoBehaviour
             buttons.Add(newLevelBtn);
         }
 
+        // Always select first button (and load its TileList into the tilemaps)
         buttons.First().Select();
-
-        try
-        {
-            eventSystem.SetSelectedGameObject(buttons.First().GameObject()); // ????????????
-        } catch (NullReferenceException nre)
-        {
-            Debug.LogException(nre);
-        }
         gameManager.loadLevel(levels.First());
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if(EventSystem.current.currentSelectedGameObject == null)
-        //{
-        //    EventSystem.current.SetSelectedGameObject(firstTileListBtn.gameObject);
-        //    Debug.Log("cowabunga 1");
-        //}
-
         wDown = Input.GetKey(KeyCode.W);
         aDown = Input.GetKey(KeyCode.A);
         sDown = Input.GetKey(KeyCode.S);
@@ -142,14 +108,12 @@ public class LevelListBehavior : MonoBehaviour
         if (buttonsSelectedIndex == 0)
             return;
 
+        buttonsSelectedIndex -= 1;
+        buttons.ElementAt(buttonsSelectedIndex).Select();
+
         Vector2 size = levelBtnPrefab.GetComponent<RectTransform>().sizeDelta;
         this.transform.position = new Vector2(this.transform.position.x,
             this.transform.position.y - size.y);
-        Debug.Log("LevelList y increased by " + size.y);
-
-        //buttons.ElementAt(buttonsSelectedIndex).OnDeselect();
-        buttonsSelectedIndex -= 1;
-        buttons.ElementAt(buttonsSelectedIndex).Select();
     }
 
     public void moveDown()
@@ -157,15 +121,12 @@ public class LevelListBehavior : MonoBehaviour
         if (buttonsSelectedIndex == buttons.Count-1)
             return;
 
+        buttonsSelectedIndex += 1;
+        buttons.ElementAt(buttonsSelectedIndex).Select();
+
         Vector2 size = levelBtnPrefab.GetComponent<RectTransform>().sizeDelta;
         this.transform.position = new Vector2(this.transform.position.x,
             this.transform.position.y + size.y);
-        Debug.Log("LevelList y increased by " + size.y);
-
-        //buttons.ElementAt(buttonsSelectedIndex).OnDeselect();
-        buttonsSelectedIndex += 1;
-        buttons.ElementAt(buttonsSelectedIndex).Select();
-        
     }
 
     IEnumerator WaitCoroutine()

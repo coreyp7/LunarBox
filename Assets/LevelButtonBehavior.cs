@@ -18,44 +18,41 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler //, IPointerCli
         this.tileList = tileList;
     }
 
-    //TODO: Have this call a method in levellistbehavior instead
-    public void OnSelect(BaseEventData eventData)
-    {
-        // Load this tileList; tileList corresponding to this button.
-        list.loadLevel(this.tileList);
-
-        //list.scrollToButton(this.transform.GetComponent<VisualElement>());
-    }
-
-    
-
     // Start is called before the first frame update
     void Start()
     {
         // don't need game manager anymore, but keeping for convenience.
-
         //GameObject obj = GameObject.FindGameObjectWithTag("GameManager");
         //gameManager = obj.GetComponent<GameManager>();
         //Debug.Log("GameManager:" + gameManager);
         list = this.transform.GetComponentInParent<LevelListBehavior>();
     }
 
+    /**
+     * Called when button is SELECTED.
+     * That is, when the user is "hovering" over the button, but hasn't
+     * "clicked" it yet. 
+     * 
+     * Loads the tileList corresponding to this button into level preview.
+     */
+    public void OnSelect(BaseEventData eventData)
+    {
+        list.loadLevel(this.tileList);
+    }
+    
+
+    /**
+     * !!!!!!!!!!Prefab for LevelBtns has this function bound to onClick().!!!!!!!!!!!!!!!!!!!!!
+     * (Will say 0 references, but just cause its being called from inspector, stupid)
+     */
+    public void LoadInEditor()
+    {
+        list.openInEditor(this.tileList);
+    }
+
     // Update is called once per frame
     void Update()
     {
         
-    }
-
-    /*
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        list.openInEditor(this.tileList);
-    }
-    */
-
-    public void LoadInEditor()
-    {
-        list.openInEditor(this.tileList);
-        //GameManager.openLevelInEditor(this.tileList);
     }
 }
