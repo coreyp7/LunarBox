@@ -263,11 +263,18 @@ public class PlayerEditorBehavior : MonoBehaviour
                 // level editor deserialization testing only
                 //DeserializeLevelFile("Saved_Levels/level_test.txt");
             }
+        }
 
-            if (escDown)
+        if (escDown)
+        {
+            if (playerControl)
             {
                 escMenu.show();
                 playerControl = false;
+            } else
+            {
+                escMenu.hide();
+                playerControl = true;
             }
         }
     }
