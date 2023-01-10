@@ -87,6 +87,11 @@ public class GameManager : MonoBehaviour
             serializeCurrentLevelToFile(FILENAME); // development only
     }
 
+    public void loadMainMenuScene()
+    {
+        //SceneManager.LoadScene("LevelEditor");
+    }
+
     /// <summary>
     /// Serializes currently loaded level into a file (filename specified by levelName in param).
     /// </summary>

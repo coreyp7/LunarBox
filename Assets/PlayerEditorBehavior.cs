@@ -121,6 +121,14 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     [SerializeField]
     private GameManager gameManager;
+
+    [SerializeField]
+    private LevelEditorEscMenu escMenu;
+
+    private Boolean escDown;
+
+    private Boolean playerControl;
+
     private void clearAllTilemaps()
     {
         groundTilemap.ClearAllTiles();
@@ -130,6 +138,7 @@ public class PlayerEditorBehavior : MonoBehaviour
         forceLeftTilemap.ClearAllTiles();
         forceRightTilemap.ClearAllTiles();
     }
+
 
     // Start is called before the first frame update
     void Start()
@@ -144,6 +153,8 @@ public class PlayerEditorBehavior : MonoBehaviour
         tileSelectionList.Add(TileType.ForceRight);
         tileSelectionList.Add(TileType.Checkpoint);
         tileSelectionListCurrentIndex = 0;
+
+        playerControl = true;
 
         // Load the TileList object set: GameManager.currentlyLoadedLevel.
         // this should be set before loading this scene. Otherwise, it will
@@ -213,6 +224,8 @@ public class PlayerEditorBehavior : MonoBehaviour
         cDown = Input.GetKeyDown(KeyCode.C);
         vDown = Input.GetKeyDown(KeyCode.V);
 
+        escDown = Input.GetKeyDown(KeyCode.Escape);
+
         // Change tile type when user selects new one
         /*
         if (Input.GetKeyDown(KeyCode.N))
@@ -222,31 +235,46 @@ public class PlayerEditorBehavior : MonoBehaviour
         */
         DetectAlphaNumericKeyDown();
 
-        // Handle player editing inputs (place/delete blocks
-        if (placeBtnDown)
+        if (playerControl)
         {
-            DeleteCurrentTile();
-            PlaceCurrentTile();
-        } else if (deleteBtnDown)
-        {
-            DeleteCurrentTile();
-        }
+            // Handle player editing inputs (place/delete blocks
+            if (placeBtnDown)
+            {
+                DeleteCurrentTile();
+                PlaceCurrentTile();
+            }
+            else if (deleteBtnDown)
+            {
+                DeleteCurrentTile();
+            }
 
-        if ((wDown || aDown || sDown || dDown) && (!beingHandled))
-        {
-            StartCoroutine(WaitCoroutine());
-        }
+            if ((wDown || aDown || sDown || dDown) && (!beingHandled))
+            {
+                StartCoroutine(WaitCoroutine());
+            }
 
-        if (cDown)
-        {
-            SerializeCurrentLevel();
-        }
+            if (cDown)
+            {
+                SerializeCurrentLevel();
+            }
 
-        if (vDown)
-        {
-            // level editor deserialization testing only
-            //DeserializeLevelFile("Saved_Levels/level_test.txt");
+            if (vDown)
+            {
+                // level editor deserialization testing only
+                //DeserializeLevelFile("Saved_Levels/level_test.txt");
+            }
+
+            if (escDown)
+            {
+                escMenu.show();
+                playerControl = false;
+            }
         }
+    }
+
+    public void setPlayerControl(bool control)
+    {
+        this.playerControl = control;
     }
 
     private Vector2 position = new Vector2(17.75f, 6.25f);
