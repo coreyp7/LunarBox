@@ -211,7 +211,7 @@ public class GameManager : MonoBehaviour
     /// Will load a level from the given tileList param.
     /// </summary>
     /// <param name="tileList"></param>
-    private void loadLevel(TileList tileList)
+    public void loadLevel(TileList tileList)
     {
         currentlyLoadedLevel = tileList;
 
@@ -324,6 +324,38 @@ public class GameManager : MonoBehaviour
         forceDownTilemap.ClearAllTiles();
         forceLeftTilemap.ClearAllTiles();
         forceRightTilemap.ClearAllTiles();
+    }
+
+    /* 
+     * For the LevelEditorTestingBehavior to use to clear the level's tilemap
+     * without erasing the ENTIRE tilemap. Want to keep blocks outside the
+     * editable area.
+     */
+    public void clearCurrentLevelArea()
+    {
+        BoundsInt box = new BoundsInt(0, 0, 0, 71, 25, 1);
+
+        // Get arrays for each tilemap, which contain each tile location in the box.
+        TileBase[] groundTiles = groundTilemap.GetTilesBlock(box);
+        TileBase[] hazardTiles = hazardTilemap.GetTilesBlock(box);
+        TileBase[] forceUpTiles = forceUpTilemap.GetTilesBlock(box);
+        TileBase[] forceDownTiles = forceDownTilemap.GetTilesBlock(box);
+        TileBase[] forceLeftTiles = forceLeftTilemap.GetTilesBlock(box);
+        TileBase[] forceRightTiles = forceRightTilemap.GetTilesBlock(box);
+
+        for (int x = 0; x < 71; x++)
+        {
+            for (int y = 0; y < 25; y++)
+            {
+                //TODO: MAKE THIS FUNCTION LESS DOGSHIT
+                groundTilemap.SetTile(new Vector3Int(x, y, 0), null);
+                hazardTilemap.SetTile(new Vector3Int(x, y, 0), null);
+                forceUpTilemap.SetTile(new Vector3Int(x, y, 0), null);
+                forceDownTilemap.SetTile(new Vector3Int(x, y, 0), null);
+                forceLeftTilemap.SetTile(new Vector3Int(x, y, 0), null);
+                forceRightTilemap.SetTile(new Vector3Int(x, y, 0), null);
+            }
+        }
     }
 }
 

@@ -49,4 +49,9 @@ public class LevelEditorEscMenu : MonoBehaviour
         this.gameObject.SetActive(false);
         playerEditor.setPlayerControl(true);
     }
+
+    public void TestLevel()
+    {
+        SceneManager.LoadScene("LevelEditorTesting");
+    }
 }

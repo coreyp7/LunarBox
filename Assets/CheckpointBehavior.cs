@@ -5,7 +5,6 @@ using UnityEngine.Tilemaps;
 
 public class CheckpointBehavior : MonoBehaviour
 {
-
     [SerializeField]
     private PlayerController player;
 

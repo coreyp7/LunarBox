@@ -56,7 +56,6 @@ public class PlayerEditorBehavior : MonoBehaviour
     private Boolean vDown;
     private Boolean cDown;
 
-
     private Boolean beingHandled;
 
     private float initialMoveSpeed = .20f;
@@ -168,7 +167,8 @@ public class PlayerEditorBehavior : MonoBehaviour
         // When this scene is loaded, we have to populate the tilemaps with the
         // level that is stored in GameManager statically. (clears tilemaps and
         // populates with GameManager.currentlyLoadedLevel).
-        gameManager.setCurrentLevel(GameManager.currentlyLoadedLevel);
+        if(GameManager.currentlyLoadedLevel != null)
+            gameManager.setCurrentLevel(GameManager.currentlyLoadedLevel);
 
         /* Not sure why this is even here; currentlyLoadedLevel will be set.
         try
