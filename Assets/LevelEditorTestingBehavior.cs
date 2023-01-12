@@ -13,7 +13,7 @@ public class LevelEditorTestingBehavior : MonoBehaviour
         // Clears area (excluding editor tiles before level for consistency)
         // and loads level. Don't use setCurrentLevel() because it erases
         // the entire tilemap.
-        gameManager.clearCurrentLevelArea();
+        gameManager.clearLevelArea();
         gameManager.loadLevel(gameManager.getCurrentLevel());
     }
 
