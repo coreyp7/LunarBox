@@ -26,7 +26,6 @@ public class CheckpointBehavior : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
-        //if(collision.gameObject == player)
         {
             player.setCheckpoint(this.transform.position);
         }

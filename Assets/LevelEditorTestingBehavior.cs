@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelEditorTestingBehavior : MonoBehaviour
 {
     [SerializeField]
     private GameManager gameManager;
+
+    private Boolean escPressed;
 
     // Start is called before the first frame update
     void Start()
@@ -15,11 +19,17 @@ public class LevelEditorTestingBehavior : MonoBehaviour
         // the entire tilemap.
         gameManager.clearLevelArea();
         gameManager.loadLevel(gameManager.getCurrentLevel());
+        escPressed = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        escPressed = Input.GetKey(KeyCode.Escape);
+
+        if (escPressed)
+        {
+            SceneManager.LoadScene("LevelEditor");
+        }
     }
 }

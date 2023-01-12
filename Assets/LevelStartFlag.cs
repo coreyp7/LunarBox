@@ -1,15 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class LevelFinishedFlag : MonoBehaviour
+public class LevelStartFlag : MonoBehaviour
 {
     [SerializeField]
-    private GameManager gameManager;
-
-
+    private PlayerController playerController;
 
     // Start is called before the first frame update
     void Start()
@@ -27,8 +23,7 @@ public class LevelFinishedFlag : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            //TODO: make this transition less jarring than it will be.
-            SceneManager.LoadScene("LevelEditor");
+            playerController.setCheckpoint(this.transform.position);
         }
     }
 }
