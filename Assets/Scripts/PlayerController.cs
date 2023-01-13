@@ -185,8 +185,13 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.T))
         {
-            transform.position = this.lastCheckpoint;
+            warpToCheckpoint();
         }
+    }
+
+    public void warpToCheckpoint()
+    {
+        transform.position = this.lastCheckpoint;
     }
 
     void FixedUpdate()

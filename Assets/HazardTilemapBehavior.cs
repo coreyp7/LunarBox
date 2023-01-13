@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class HazardTilemapBehavior : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerController controller;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +24,7 @@ public class HazardTilemapBehavior : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Hit lava.");
+            controller.warpToCheckpoint();
         }
     }
 }
