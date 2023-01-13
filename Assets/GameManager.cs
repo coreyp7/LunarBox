@@ -98,6 +98,30 @@ public class GameManager : MonoBehaviour
     /// <param name="levelName"> The name of the level. </param>
     public void serializeCurrentLevelToFile(string levelName)
     {
+        TileList levelTileList = convertTilemapsToTileList();
+
+        string serializedTileJson = JsonUtility.ToJson(levelTileList);
+
+        Debug.Log("Tiles in serializedtileJson:" + levelTileList.tiles.Count);
+        Debug.Log(serializedTileJson);
+
+        try
+        {
+            //System.IO.File.WriteAllText("Saved_Levels/level_test.txt", serializedTileJson);
+            System.IO.File.WriteAllText("Saved_Levels/" + levelName + ".txt", serializedTileJson);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError(ex.StackTrace);
+        }
+    }
+
+    /// <summary>
+    /// Will create a TileList object of whatever is in the level when it is called.
+    /// </summary>
+    /// <returns>TileList representation of current tilemaps' contents.</returns>
+    public TileList convertTilemapsToTileList()
+    {
         BoundsInt box = new BoundsInt(0, 0, 0, 71, 25, 1);
 
         // Get arrays for each tilemap, which contain each tile location in the box.
@@ -111,22 +135,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("tiles.length is: "+ groundTiles.Length);
 
         TileList tileSerializes = new TileList(); // list of TileSerialized objects
-
-        if (currentlyLoadedLevel != null) // DEVELOPMENT ONLY
-        {
-            if (currentlyLoadedLevel.name != "")
-            {
-                tileSerializes.name = currentlyLoadedLevel.name;
-            }
-            else
-            {
-                tileSerializes.name = this.FILENAME;
-            }
-        }
-        else
-        {
-            tileSerializes.name = this.FILENAME;
-        }
+        tileSerializes.name = currentlyLoadedLevel.name;
 
         for (int x = 0; x < 71; x++)
         {
@@ -177,21 +186,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-
-        string serializedTileJson = JsonUtility.ToJson(tileSerializes);
-
-        Debug.Log("Tiles in serializedtileJson:" + tileSerializes.tiles.Count);
-        Debug.Log(serializedTileJson);
-
-        try
-        {
-            //System.IO.File.WriteAllText("Saved_Levels/level_test.txt", serializedTileJson);
-            System.IO.File.WriteAllText("Saved_Levels/" + levelName + ".txt", serializedTileJson);
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogError(ex.StackTrace);
-        }
+        return tileSerializes;
     }
 
     /// <summary>

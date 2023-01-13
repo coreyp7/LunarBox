@@ -52,6 +52,8 @@ public class LevelEditorEscMenu : MonoBehaviour
 
     public void TestLevel()
     {
+        // current changes aren't made yet.
+        gameManager.setCurrentLevel(gameManager.convertTilemapsToTileList());
         SceneManager.LoadScene("LevelEditorTesting");
     }
 }

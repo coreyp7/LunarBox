@@ -24,6 +24,11 @@ public class TileList
         this.name = "";
     }
 
+    public TileList(string name)
+    {
+        this.name = name;
+    }
+
     public String toString()
     {
         string str = "";
