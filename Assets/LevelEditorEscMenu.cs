@@ -19,6 +19,9 @@ public class LevelEditorEscMenu : MonoBehaviour
     [SerializeField]
     private PlayerEditorBehavior playerEditor;
 
+    [SerializeField]
+    private LevelOptionsMenuBehavior levelOptions;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,5 +58,10 @@ public class LevelEditorEscMenu : MonoBehaviour
         // current changes aren't made yet.
         gameManager.setCurrentLevel(gameManager.convertTilemapsToTileList());
         SceneManager.LoadScene("LevelEditorTesting");
+    }
+
+    public void LevelOptionsMenu()
+    {
+        levelOptions.show();
     }
 }
