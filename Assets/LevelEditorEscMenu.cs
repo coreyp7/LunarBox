@@ -50,6 +50,7 @@ public class LevelEditorEscMenu : MonoBehaviour
     {
         this.gameObject.SetActive(true);
         eventSystem.SetSelectedGameObject(testLevelBtn.gameObject);
+        playerEditor.setPlayerControl(false);
     }
 
     public void hide()

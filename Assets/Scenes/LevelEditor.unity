@@ -8806,6 +8806,7 @@ MonoBehaviour:
   eventSystem: {fileID: 651903878}
   speedText: {fileID: 275543498}
   jumpHeightText: {fileID: 1934614150}
+  LevelEditorEscMenu: {fileID: 1269889945}
 --- !u!1 &1697451098
 GameObject:
   m_ObjectHideFlags: 0
