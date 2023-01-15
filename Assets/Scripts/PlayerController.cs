@@ -307,4 +307,24 @@ public class PlayerController : MonoBehaviour
         Debug.Log("Player checkpoint pos set to " + position);
 
     }
+
+    public float getPlayerSpeed()
+    {
+        return this.moveSpeed;
+    }
+
+    public float getPlayerJumpForce()
+    {
+        return this.jumpForce;
+    }
+
+    public void setPlayerSpeed(float speed)
+    {
+        this.moveSpeed = speed;
+    }
+
+    public void setPlayerJumpForce(float force)
+    {
+        this.jumpForce = force;
+    }
 }

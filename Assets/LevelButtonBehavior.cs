@@ -41,7 +41,7 @@ public class LevelButtonBehavior : MonoBehaviour, ISelectHandler //, IPointerCli
         try
         {
             list.loadLevelPreview(this.tileList);
-            Debug.Log(this.tileList.toString());
+            Debug.Log("speed:"+this.tileList.playerSpeed+", jump:"+this.tileList.playerJumpForce);
         }
         catch (NullReferenceException nre)
         {

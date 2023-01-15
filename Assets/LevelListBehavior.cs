@@ -85,7 +85,7 @@ public class LevelListBehavior : MonoBehaviour
             newLevelBtn.GetComponent<LevelButtonBehavior>().setTileList(levelInfo);
 
             TextMeshProUGUI text = newLevelBtn.GetComponentInChildren<TextMeshProUGUI>();
-            text.text = levelInfo.name;
+            text.text = levelInfo.name + "| jump:" + levelInfo.playerJumpForce + ", speed:" + levelInfo.playerSpeed;
             text.fontSize = 60;
 
             buttons.Add(newLevelBtn);

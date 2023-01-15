@@ -61,6 +61,9 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public static TileList currentlyLoadedLevel;
 
+    [SerializeField]
+    private PlayerController playerController;
+
 
     // Start is called before the first frame update
     void Start()
@@ -99,6 +102,9 @@ public class GameManager : MonoBehaviour
     public void serializeCurrentLevelToFile(string levelName)
     {
         TileList levelTileList = convertTilemapsToTileList();
+        levelTileList.name = levelName;
+        levelTileList.playerSpeed = GameManager.currentlyLoadedLevel.playerSpeed;
+        levelTileList.playerJumpForce = GameManager.currentlyLoadedLevel.playerJumpForce;
 
         string serializedTileJson = JsonUtility.ToJson(levelTileList);
 
@@ -118,6 +124,7 @@ public class GameManager : MonoBehaviour
 
     /// <summary>
     /// Will create a TileList object of whatever is in the level when it is called.
+    /// NOTE: Does not give TileList a name. Uses default values for player props.
     /// </summary>
     /// <returns>TileList representation of current tilemaps' contents.</returns>
     public TileList convertTilemapsToTileList()
@@ -135,7 +142,6 @@ public class GameManager : MonoBehaviour
         //Debug.Log("tiles.length is: "+ groundTiles.Length);
 
         TileList tileSerializes = new TileList(); // list of TileSerialized objects
-        tileSerializes.name = currentlyLoadedLevel.name;
 
         for (int x = 0; x < 71; x++)
         {
@@ -331,6 +337,11 @@ public class GameManager : MonoBehaviour
         BoundsInt box = new BoundsInt(0, 0, 0, 71, 25, 1);
         TileBase[] nulls = new TileBase[71 * 25];
         groundTilemap.SetTilesBlock(box,nulls);
+        hazardTilemap.SetTilesBlock(box,nulls);
+        forceUpTilemap.SetTilesBlock(box,nulls);
+        forceDownTilemap.SetTilesBlock(box, nulls);
+        forceLeftTilemap.SetTilesBlock(box, nulls);
+        forceRightTilemap.SetTilesBlock(box, nulls);
     }
 }
 

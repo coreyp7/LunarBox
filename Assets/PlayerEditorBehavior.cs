@@ -147,7 +147,7 @@ public class PlayerEditorBehavior : MonoBehaviour
         tileSelectionList.Add(TileType.Ground);
         tileSelectionList.Add(TileType.Hazard);
         tileSelectionList.Add(TileType.ForceUp);
-        tileSelectionList.Add (TileType.ForceDown);
+        tileSelectionList.Add(TileType.ForceDown);
         tileSelectionList.Add(TileType.ForceLeft);
         tileSelectionList.Add(TileType.ForceRight);
         tileSelectionList.Add(TileType.Checkpoint);
@@ -180,6 +180,8 @@ public class PlayerEditorBehavior : MonoBehaviour
             Debug.Log("NRE in PlayerEditorBehavior");
         }
         */
+        Debug.Log("Gamemanager:currentlyLoadedLevel: speed=" + GameManager.currentlyLoadedLevel.playerSpeed + 
+            ", jump=" + GameManager.currentlyLoadedLevel.playerJumpForce);
     }
     
     private void selectNextTileType()
@@ -255,7 +257,8 @@ public class PlayerEditorBehavior : MonoBehaviour
 
             if (cDown)
             {
-                SerializeCurrentLevel();
+                // level editor serialization testing only
+                //SerializeCurrentLevel();
             }
 
             if (vDown)

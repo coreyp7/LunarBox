@@ -11,6 +11,9 @@ public class LevelEditorTestingBehavior : MonoBehaviour
 
     private Boolean escPressed;
 
+    [SerializeField]
+    private PlayerController playerController;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +23,11 @@ public class LevelEditorTestingBehavior : MonoBehaviour
         gameManager.clearLevelArea();
         gameManager.loadLevel(gameManager.getCurrentLevel());
         escPressed = false;
+
+        playerController.setPlayerSpeed(gameManager.getCurrentLevel().playerSpeed);
+        Debug.Log("Player speed set to " + gameManager.getCurrentLevel().playerSpeed);
+        playerController.setPlayerJumpForce(gameManager.getCurrentLevel().playerJumpForce);
+        Debug.Log("Player jump set to " + gameManager.getCurrentLevel().playerJumpForce);
     }
 
     // Update is called once per frame

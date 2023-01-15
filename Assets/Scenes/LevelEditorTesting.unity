@@ -520,6 +520,7 @@ MonoBehaviour:
   forceRightTile: {fileID: 11400000, guid: f705ab9c9b9e6b548b98d8a93b38837f, type: 2}
   checkpointContainer: {fileID: 812151278}
   checkpointPrefab: {fileID: 181624078276501089, guid: db778c66c02869c49be5236122e260b8, type: 3}
+  playerController: {fileID: 0}
 --- !u!4 &623629482
 Transform:
   m_ObjectHideFlags: 0
@@ -4283,6 +4284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 623629481}
+  playerController: {fileID: 116131994}
 --- !u!4 &1083252701
 Transform:
   m_ObjectHideFlags: 0

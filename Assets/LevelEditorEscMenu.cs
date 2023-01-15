@@ -36,7 +36,9 @@ public class LevelEditorEscMenu : MonoBehaviour
 
     public void SaveAndQuit()
     {
-        gameManager.serializeCurrentLevel();
+        //gameManager.serializeCurrentLevel();
+        gameManager.serializeCurrentLevelToFile(GameManager.currentlyLoadedLevel.name);
+        
 
         SceneManager.LoadScene("MainMenu");
     }
@@ -56,7 +58,13 @@ public class LevelEditorEscMenu : MonoBehaviour
     public void TestLevel()
     {
         // current changes aren't made yet.
-        gameManager.setCurrentLevel(gameManager.convertTilemapsToTileList());
+        TileList updatedTiles = gameManager.convertTilemapsToTileList();
+        updatedTiles.playerJumpForce = GameManager.currentlyLoadedLevel.playerJumpForce;
+        updatedTiles.playerSpeed = GameManager.currentlyLoadedLevel.playerSpeed;
+        updatedTiles.name = GameManager.currentlyLoadedLevel.name;
+
+        gameManager.setCurrentLevel(updatedTiles);
+
         SceneManager.LoadScene("LevelEditorTesting");
     }
 

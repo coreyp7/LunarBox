@@ -12,6 +12,9 @@ public class TileList
 
     public string name;
 
+    public float playerSpeed;
+    public float playerJumpForce;
+
     //date created...
 
     //last edited...
@@ -22,11 +25,16 @@ public class TileList
     {
         this.tiles = new List<TileSerialize>();
         this.name = "";
+        playerSpeed = 10;
+        playerJumpForce = 11;
     }
 
     public TileList(string name)
     {
         this.name = name;
+        this.tiles = new List<TileSerialize>();
+        playerSpeed = 10;
+        playerJumpForce = 11;
     }
 
     public String toString()
