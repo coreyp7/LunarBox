@@ -17,6 +17,9 @@ public class LevelEditorEscMenu : MonoBehaviour
     private Button saveAndQuit;
 
     [SerializeField]
+    private Button testLevelBtn;
+
+    [SerializeField]
     private PlayerEditorBehavior playerEditor;
 
     [SerializeField]
@@ -46,7 +49,7 @@ public class LevelEditorEscMenu : MonoBehaviour
     public void show()
     {
         this.gameObject.SetActive(true);
-        eventSystem.SetSelectedGameObject(saveAndQuit.gameObject);
+        eventSystem.SetSelectedGameObject(testLevelBtn.gameObject);
     }
 
     public void hide()
