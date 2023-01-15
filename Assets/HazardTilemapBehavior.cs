@@ -24,6 +24,7 @@ public class HazardTilemapBehavior : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             Debug.Log("Hit lava.");
+
             controller.warpToCheckpoint();
         }
     }

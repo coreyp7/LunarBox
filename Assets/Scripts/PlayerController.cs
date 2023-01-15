@@ -191,6 +191,7 @@ public class PlayerController : MonoBehaviour
 
     public void warpToCheckpoint()
     {
+        rb.velocity = new Vector2(0, 0);
         transform.position = this.lastCheckpoint;
     }
 

@@ -1424,6 +1424,7 @@ GameObject:
   - component: {fileID: 519420031}
   - component: {fileID: 519420029}
   - component: {fileID: 519420033}
+  - component: {fileID: 519420034}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1504,7 +1505,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 60974a8896156c846978112eb44c852e, type: 3}
   m_Name: 
@@ -1513,6 +1514,25 @@ MonoBehaviour:
   xOffset: 0
   yOffset: 0.5
   followSpeed: 10
+  isXLocked: 0
+  isYLocked: 0
+  hitboxRate: 0
+--- !u!114 &519420034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 519420028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dde58f0542e7f0438e56799c7a840ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trackingTarget: {fileID: 1811682267}
+  xOffset: 0
+  yOffset: 1
+  followSpeed: 5
   isXLocked: 0
   isYLocked: 0
   hitboxRate: 0

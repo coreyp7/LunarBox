@@ -45,6 +45,11 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     private Boolean dDown;
 
+    private Boolean allowUpKey;
+    private Boolean allowDownKey;
+    private Boolean allowLeftKey;
+    private Boolean allowRightKey;
+
     private Boolean Alpha0Down;
     private Boolean Alpha1Down;
     private Boolean Alpha2Down;
@@ -61,6 +66,7 @@ public class PlayerEditorBehavior : MonoBehaviour
     private float initialMoveSpeed = .20f;
 
     private float holdingMoveSpeed = .05f;
+    //private float holdingMoveSpeed = .1f;
 
     private KeyCode lastKeyHeld;
 
@@ -128,6 +134,8 @@ public class PlayerEditorBehavior : MonoBehaviour
 
     private Boolean playerControl;
 
+    private BoundsInt levelArea = new BoundsInt(0, 0, 0, 71, 25, 1);
+
     private void clearAllTilemaps()
     {
         groundTilemap.ClearAllTiles();
@@ -154,6 +162,11 @@ public class PlayerEditorBehavior : MonoBehaviour
         tileSelectionListCurrentIndex = 0;
 
         playerControl = true;
+
+        allowUpKey = true;
+        allowDownKey = true;
+        allowLeftKey = true;
+        allowRightKey = true;
 
         // Load the TileList object set: GameManager.currentlyLoadedLevel.
         // this should be set before loading this scene. Otherwise, it will
@@ -228,6 +241,9 @@ public class PlayerEditorBehavior : MonoBehaviour
 
         escDown = Input.GetKeyDown(KeyCode.Escape);
 
+        Vector3Int cursorPosition = groundTilemap.WorldToCell(transform.position);
+        detectEdgeOfLevelArea(cursorPosition); // sets allowXKey bools
+
         // Change tile type when user selects new one
         /*
         if (Input.GetKeyDown(KeyCode.N))
@@ -239,7 +255,8 @@ public class PlayerEditorBehavior : MonoBehaviour
 
         if (playerControl)
         {
-            // Handle player editing inputs (place/delete blocks
+            // Handle player editing inputs (place/delete blocks)
+            // If they're in the level area, then allow block placement
             if (placeBtnDown)
             {
                 DeleteCurrentTile();
@@ -250,10 +267,25 @@ public class PlayerEditorBehavior : MonoBehaviour
                 DeleteCurrentTile();
             }
 
-            if ((wDown || aDown || sDown || dDown) && (!beingHandled))
+            if ((wDown || aDown || sDown || dDown) && 
+                    (!beingHandled)
+                    )
             {
                 StartCoroutine(WaitCoroutine());
             }
+            // Keeping player movement in the level area.
+            /*
+             * if player.x == xMin:
+             *      disable left button
+             * if player.x == xMax:
+             *      disable right button
+             * if player.y == xMax:
+             *      disable up button
+             *      etc......
+             *      
+             *      levelArea.Contains(cursorPosition)
+             * use this to get the current position. only use one tilemap...
+             */
 
             if (cDown)
             {
@@ -279,6 +311,45 @@ public class PlayerEditorBehavior : MonoBehaviour
                 escMenu.hide();
                 playerControl = true;
             }
+        }
+    }
+
+    public void detectEdgeOfLevelArea(Vector3Int cursorPosition)
+    {
+        if (cursorPosition.x == levelArea.xMin)
+        {
+            allowLeftKey = false;
+        }
+        else
+        {
+            allowLeftKey = true;
+        }
+
+        if (cursorPosition.x == levelArea.xMax-1)
+        {
+            allowRightKey = false;
+        }
+        else
+        {
+            allowRightKey = true;
+        }
+
+        if (cursorPosition.y == levelArea.yMin)
+        {
+            allowDownKey = false;
+        }
+        else
+        {
+            allowDownKey = true;
+        }
+
+        if (cursorPosition.y == levelArea.yMax-1)
+        {
+            allowUpKey = false;
+        }
+        else
+        {
+            allowUpKey = true;
         }
     }
 
@@ -351,21 +422,40 @@ public class PlayerEditorBehavior : MonoBehaviour
         beingHandled = true;
         if (dDown)
         {
-            transform.position = new Vector3(transform.position.x + .5f, transform.position.y, 0);
+            if (allowRightKey)
+            {
+                transform.position = new Vector3(transform.position.x + .5f, transform.position.y, 0);
+            } else
+            {
+                yield return null;
+            }
         }
         else if (aDown)
         {
-            transform.position = new Vector3(transform.position.x - .5f, transform.position.y, 0);
+            if (allowLeftKey)
+            {
+                transform.position = new Vector3(transform.position.x - .5f, transform.position.y, 0);
+            } else
+            {
+                yield return null;
+            }
         }
 
         if (wDown)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y + .5f, 0);
+            if (allowUpKey)
+                transform.position = new Vector3(transform.position.x, transform.position.y + .5f, 0);
+            else
+                yield return null;
         }
         else if (sDown)
         {
-            transform.position = new Vector3(transform.position.x, transform.position.y - .5f, 0);
+            if (allowDownKey)
+                transform.position = new Vector3(transform.position.x, transform.position.y - .5f, 0);
+            else
+                yield return null;
         }
+
         yield return new WaitForSeconds(holdingMoveSpeed);
         beingHandled = false;
     }
