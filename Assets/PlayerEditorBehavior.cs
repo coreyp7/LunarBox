@@ -119,6 +119,9 @@ public class PlayerEditorBehavior : MonoBehaviour
     private Tilemap forceRightTilemap;
 
     [SerializeField]
+    private Tilemap exitZoneTilemap;
+
+    [SerializeField]
     private GameObject checkpointPrefab;
 
     [SerializeField]
@@ -255,9 +258,9 @@ public class PlayerEditorBehavior : MonoBehaviour
 
         if (playerControl)
         {
-            // Handle player editing inputs (place/delete blocks)
-            // If they're in the level area, then allow block placement
-            if (placeBtnDown)
+            // Handle player editing inputs (place/delete blocks).
+            // If they're in the valid level area, then allow block placement.
+            if (placeBtnDown && !exitZoneTilemap.GetTile(cursorPosition))
             {
                 DeleteCurrentTile();
                 PlaceCurrentTile();
@@ -501,6 +504,7 @@ public class PlayerEditorBehavior : MonoBehaviour
         // First check for ground/hazard. If not then go through all the force blocks manually.
         // Really stupid but the only way to do this with the current configuration.
         Vector3Int cursorPosition = groundTilemap.WorldToCell(transform.position);
+
         Boolean groundTile = groundTilemap.HasTile(cursorPosition);
         if (groundTile)
         {
