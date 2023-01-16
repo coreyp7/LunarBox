@@ -5213,6 +5213,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5516557009761430882, guid: 0dcce7e73c6ccd341a9ded6a5a84da98, type: 3}
+      propertyPath: checkRadius
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5516557009761430882, guid: 0dcce7e73c6ccd341a9ded6a5a84da98, type: 3}
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 623629481}
