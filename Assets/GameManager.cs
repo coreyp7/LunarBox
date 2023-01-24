@@ -343,6 +343,45 @@ public class GameManager : MonoBehaviour
         forceLeftTilemap.SetTilesBlock(box, nulls);
         forceRightTilemap.SetTilesBlock(box, nulls);
     }
+
+    public void loadImageToSprite(string filepath)
+    {
+        
+        Texture2D tex = null;
+        byte[] data = null;
+
+
+        if (File.Exists(filepath))
+        {
+            data = File.ReadAllBytes(filepath);
+            tex = new Texture2D(200, 200);
+            tex.LoadImage(data);
+
+            // Turn into a tile (Texture2D -> Sprite -> into Tile).
+            Tile newTile = new Tile();
+            Sprite newSprite = Sprite.Create(tex, new Rect(), new Vector2(0, 0), 200);
+            newTile.sprite = newSprite;
+
+            // TODO:
+            /*
+             * Return the newTile from this function.
+             * 
+             * 1. Create a function with a parameter that specifies
+             * the tile type to load to (in addition to its filepath).
+             *      - call this function
+             *      - set the tile to its respective variable (groundTile,
+             *      hazardTile, etc.).
+             * 
+             * 2. Change loading/saving functions to include the sprites
+             * of the level into the level JSON.
+             *      - save a unique identifier for that tile
+             *      - load tile from a player_tilemap directory and determine
+             *      the correct one to load by the unique specifier.
+             * 
+             */
+        }
+        
+    }
 }
 
 /*
