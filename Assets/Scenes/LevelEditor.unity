@@ -9379,7 +9379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2e1b036d6fa89645b9920912e052db6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundTileImage: {fileID: 1070886275}
+  groundTileImage: {fileID: 270523418}
   hazardTileImage: {fileID: 1470570445}
   forceUpTileImage: {fileID: 2104988713}
   forceDownTileImage: {fileID: 1398995943}
