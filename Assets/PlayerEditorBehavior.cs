@@ -260,14 +260,17 @@ public class PlayerEditorBehavior : MonoBehaviour
         {
             // Handle player editing inputs (place/delete blocks).
             // If they're in the valid level area, then allow block placement.
-            if (placeBtnDown && !exitZoneTilemap.GetTile(cursorPosition))
+            if (!exitZoneTilemap.GetTile(cursorPosition))
             {
-                DeleteCurrentTile();
-                PlaceCurrentTile();
-            }
-            else if (deleteBtnDown)
-            {
-                DeleteCurrentTile();
+                if (placeBtnDown)
+                {
+                    DeleteCurrentTile();
+                    PlaceCurrentTile();
+                }
+                else if (deleteBtnDown)
+                {
+                    DeleteCurrentTile();
+                }
             }
 
             if ((wDown || aDown || sDown || dDown) && 
