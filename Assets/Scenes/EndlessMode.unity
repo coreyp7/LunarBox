@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &64919754 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 181624078276501088, guid: db778c66c02869c49be5236122e260b8, type: 3}
+  m_PrefabInstance: {fileID: 324679679}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc61457175e36a8469645fff6779e072, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &75188732
 GameObject:
   m_ObjectHideFlags: 0
@@ -6300,6 +6311,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameManager: {fileID: 623629481}
   checkpointPrefab: {fileID: 181624078276501089, guid: db778c66c02869c49be5236122e260b8, type: 3}
+  firstLevelCheckpoint: {fileID: 64919754}
 --- !u!4 &1255755855
 Transform:
   m_ObjectHideFlags: 0

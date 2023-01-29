@@ -8,9 +8,13 @@ public class CheckpointBehavior : MonoBehaviour
     [SerializeField]
     private PlayerController player;
 
+    [SerializeField]
     private float jumpHeight;
-
+    [SerializeField]
     private float moveSpeed;
+
+    [SerializeField]
+    private bool endOfLevel = false;
 
     //private Tilemap checkpointTilemap;
 
@@ -27,6 +31,11 @@ public class CheckpointBehavior : MonoBehaviour
         
     }
 
+    public void setEndOfLevel(bool val)
+    {
+        endOfLevel = val;
+    }
+
     public void setJumpHeight(float val)
     {
         jumpHeight = val;
@@ -39,11 +48,20 @@ public class CheckpointBehavior : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
         if(collision.gameObject.tag == "Player")
         {
-            player.setCheckpoint(this.transform.position);
-            player.setPlayerJumpForce(jumpHeight);
-            player.setPlayerSpeed(moveSpeed);
+            if (endOfLevel)
+            {
+                // TODO: go back to main menu, show that they won somehow.
+                Debug.Log("ENDLESS FINISHED");
+            } 
+            else
+            {
+                player.setCheckpoint(this.transform.position);
+                player.setPlayerJumpForce(jumpHeight);
+                player.setPlayerSpeed(moveSpeed);
+            }
         }
     }
 }
