@@ -52,7 +52,7 @@ public class EditorCameraBehavior : MonoBehaviour
         /*float xNew = Mathf.Lerp(transform.position.x, xTarget, Time.deltaTime * followSpeed);
         float yNew = Mathf.Lerp(transform.position.y, yTarget, Time.deltaTime * followSpeed);*/
 
-        if(!(xNew > 24.25f || xNew < 11.25)) // if in the bounds of the level, scroll normally. otherwise ignore it.
+        if(!(xNew > 27.17 || xNew < 8.36)) // if in the bounds of the level, scroll normally. otherwise ignore it.
         {
             transform.position = new Vector3(xNew, yNew, transform.position.z);
         }

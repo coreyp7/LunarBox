@@ -98,6 +98,25 @@ public class LevelListBehavior : MonoBehaviour
         // Functions properly so is alright.
         gameManager.setCurrentLevel(levels.First());
         buttons.First().Select();
+
+        if(levels.Count == 0)
+        {
+            TileList placeHolder = gameManager.deserializeLevelFileReturn("Saved_Levels/Default/level_menu_new_level.txt");
+            gameManager.setCurrentLevel(placeHolder);
+            gameManager.serializeCurrentLevelToFile("new_level");
+
+            Button newLevelBtn = Instantiate(levelBtnPrefab, this.transform);
+            newLevelBtn.GetComponent<LevelButtonBehavior>().setTileList(placeHolder);
+
+            TextMeshProUGUI text = newLevelBtn.GetComponentInChildren<TextMeshProUGUI>();
+            //text.text = levelInfo.name + "| jump:" + levelInfo.playerJumpForce + ", speed:" + levelInfo.playerSpeed;
+            //text.fontSize = 60;
+            text.text = placeHolder.name + "\nJump Height: " + placeHolder.playerJumpForce + "\nMove Speed:" + placeHolder.playerSpeed;
+
+            buttons.Add(newLevelBtn);
+            Debug.Log(placeHolder);
+            newLevelBtn.Select();
+        }
     }
 
     // Update is called once per frame

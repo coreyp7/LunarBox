@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Button = UnityEngine.UI.Button;
 using Cursor = UnityEngine.Cursor;
 
@@ -82,7 +83,8 @@ public class EndlessManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            gameManager.loadMainMenuScene();
+            Debug.Log("escape pressed in endless");
+            SceneManager.LoadScene("MainMenu");
         }
     }
 
