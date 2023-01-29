@@ -37,7 +37,7 @@ public class EndlessManager : MonoBehaviour
         // Get directory of TileLists, and create buttons corresponding to each.
         // Put each button in order in list 'buttons'.
         List<TileList> levels = gameManager.deserializeLevelsDirectory("Saved_Levels/");
-        //IListExtensions.Shuffle(levels);
+        IListExtensions.Shuffle(levels);
 
         // each loop:
         // put the level into the tilemaps
