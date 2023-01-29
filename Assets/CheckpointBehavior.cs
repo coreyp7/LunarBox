@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Tilemaps;
 
 public class CheckpointBehavior : MonoBehaviour
@@ -55,6 +57,7 @@ public class CheckpointBehavior : MonoBehaviour
             {
                 // TODO: go back to main menu, show that they won somehow.
                 Debug.Log("ENDLESS FINISHED");
+                SceneManager.LoadScene("MainMenu");
             } 
             else
             {

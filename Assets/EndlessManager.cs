@@ -61,9 +61,7 @@ public class EndlessManager : MonoBehaviour
                 float value = 35.25f;
                 value += 35.50f * (i-1);
 
-
-
-                GameObject newCheckpoint = Instantiate(checkpointPrefab, new Vector3(value, 4.75f, 0f), Quaternion.identity);
+                GameObject newCheckpoint = Instantiate(checkpointPrefab, new Vector3(value, 5.75f, 0f), Quaternion.identity);
                 newCheckpoint.GetComponent<CheckpointBehavior>().setJumpHeight(levels[i].playerJumpForce);
                 newCheckpoint.GetComponent<CheckpointBehavior>().setMoveSpeed(levels[i].playerSpeed);
             } else
@@ -75,7 +73,7 @@ public class EndlessManager : MonoBehaviour
 
         float value2 = 35.25f;
         value2 += 35.50f * (levels.Count - 1);
-        GameObject finalCheckpoint = Instantiate(checkpointPrefab, new Vector3(value2, 4.75f, 0f), Quaternion.identity);
+        GameObject finalCheckpoint = Instantiate(checkpointPrefab, new Vector3(value2, 5.75f, 0f), Quaternion.identity);
         finalCheckpoint.GetComponent<CheckpointBehavior>().setEndOfLevel(true);
     }
 
