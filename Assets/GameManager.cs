@@ -257,6 +257,56 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /**
+     * Will put the given tileList into the given position 
+     * (just the order of the level, 1,2,3,4,....)
+     */
+    public void putLevel(TileList tileList, int pos)
+    {
+        foreach (TileSerialize tile in tileList.tiles)
+        {
+            // Sketchy casting from float to int.
+            // Originally TileSerialize had integer cords (since tiles
+            // are always going to be ints), but changed to floats so
+            // that we can use them with checkpoints (which do not use
+            // the position of the tilemaps, uses regular global pos.
+            BoundsInt box = new BoundsInt(0, 0, 0, 71, 25, 1);
+            Vector3Int tilePosition;
+
+            if (pos > 0)
+            {
+                int scale = pos * 71;
+                Debug.Log(scale);
+                tilePosition = new(scale + (int)tile.x, (int)tile.y);
+            } else
+            {
+                tilePosition = new((int)tile.x, (int)tile.y);
+            }
+
+            switch (tile.type)
+            {
+                case "ground":
+                    groundTilemap.SetTile(tilePosition, groundTile);
+                    break;
+                case "hazard":
+                    hazardTilemap.SetTile(tilePosition, hazardTile);
+                    break;
+                case "forceup":
+                    forceUpTilemap.SetTile(tilePosition, forceUpTile);
+                    break;
+                case "forcedown":
+                    forceDownTilemap.SetTile(tilePosition, forceDownTile);
+                    break;
+                case "forceleft":
+                    forceLeftTilemap.SetTile(tilePosition, forceLeftTile);
+                    break;
+                case "forceright":
+                    forceRightTilemap.SetTile(tilePosition, forceRightTile);
+                    break;
+            }
+        }
+    }
+
     /// <summary>
     /// Will return a list of TileList objects, each of which corresponds to
     /// each level file.

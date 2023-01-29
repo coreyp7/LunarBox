@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class CheckpointBehavior : MonoBehaviour
+public class CheckpointEndlessBehavior : MonoBehaviour
 {
     [SerializeField]
     private PlayerController player;
-
-    private float jumpHeight;
-
-    private float moveSpeed;
 
     //private Tilemap checkpointTilemap;
 
@@ -27,23 +23,11 @@ public class CheckpointBehavior : MonoBehaviour
         
     }
 
-    public void setJumpHeight(float val)
-    {
-        jumpHeight = val;
-    }
-
-    public void setMoveSpeed(float val)
-    {
-        moveSpeed = val;
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player")
         {
             player.setCheckpoint(this.transform.position);
-            player.setPlayerJumpForce(jumpHeight);
-            player.setPlayerSpeed(moveSpeed);
         }
     }
 }

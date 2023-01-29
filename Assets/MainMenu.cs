@@ -21,4 +21,9 @@ public class MainMenu : MonoBehaviour
     {
         SceneManager.LoadScene("LevelMenu");
     }
+
+    public void loadEndlessScene()
+    {
+        SceneManager.LoadScene("EndlessMode");
+    }
 }
