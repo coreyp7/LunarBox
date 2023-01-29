@@ -34,10 +34,8 @@ public class NewLevelMenu : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    
-
-
-
-
-
+    private void OnApplicationFocus(bool focus)
+    {
+        inputField.ActivateInputField();
+    }
 }

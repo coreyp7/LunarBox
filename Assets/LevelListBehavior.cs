@@ -164,17 +164,16 @@ public class LevelListBehavior : MonoBehaviour
         {
             moveUp();
         }
-        else if (sDown)
+        else if (aDown)
         {
             if (inTopMenu)
             {
                 buttons.ElementAt(buttonsSelectedIndex).Select();
                 inTopMenu = false;
             }
-            else
-            {
-                moveDown();
-            }
+        } else if (sDown)
+        {
+            moveDown();
         } else if (dDown)
         {
             selectTopMenu();
