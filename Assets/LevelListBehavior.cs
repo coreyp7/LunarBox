@@ -85,31 +85,13 @@ public class LevelListBehavior : MonoBehaviour
         buttonsSelectedIndex = 0;
         buttons = new List<Button>();
 
+
+
         // Get directory of TileLists, and create buttons corresponding to each.
         // Put each button in order in list 'buttons'.
         List<TileList> levels = gameManager.deserializeLevelsDirectory();
-        foreach(TileList levelInfo in levels)
-        {
-            //Create ui button with prefab, give it level info (TileList)
-            Button newLevelBtn = Instantiate(levelBtnPrefab, this.transform);
-            newLevelBtn.GetComponent<LevelButtonBehavior>().setTileList(levelInfo);
 
-            TextMeshProUGUI text = newLevelBtn.GetComponentInChildren<TextMeshProUGUI>();
-            //text.text = levelInfo.name + "| jump:" + levelInfo.playerJumpForce + ", speed:" + levelInfo.playerSpeed;
-            //text.fontSize = 60;
-            text.text = levelInfo.name + "\nJump Height: " + levelInfo.playerJumpForce + "\nMove Speed:" + levelInfo.playerSpeed;
-
-            buttons.Add(newLevelBtn);
-            Debug.Log(levelInfo);
-        }
-
-        // Always select first button (and load its TileList into the tilemaps)
-        // NOTE: THIS ALWAYS THROWS NullReferenceException AND I DON'T KNOW WHY.
-        // Functions properly so is alright.
-        gameManager.setCurrentLevel(levels.First());
-        buttons.First().Select();
-
-        if(levels.Count == 0)
+        if (levels.Count == 0)
         {
             TileList placeHolder = gameManager.deserializeLevelFileReturn("default/level_menu_new_level.txt");
             gameManager.setCurrentLevel(placeHolder);
@@ -126,6 +108,31 @@ public class LevelListBehavior : MonoBehaviour
             buttons.Add(newLevelBtn);
             Debug.Log(placeHolder);
             newLevelBtn.Select();
+        }
+        else
+        {
+
+            foreach (TileList levelInfo in levels)
+            {
+                //Create ui button with prefab, give it level info (TileList)
+                Button newLevelBtn = Instantiate(levelBtnPrefab, this.transform);
+                newLevelBtn.GetComponent<LevelButtonBehavior>().setTileList(levelInfo);
+
+                TextMeshProUGUI text = newLevelBtn.GetComponentInChildren<TextMeshProUGUI>();
+                //text.text = levelInfo.name + "| jump:" + levelInfo.playerJumpForce + ", speed:" + levelInfo.playerSpeed;
+                //text.fontSize = 60;
+                text.text = levelInfo.name + "\nJump Height: " + levelInfo.playerJumpForce + "\nMove Speed:" + levelInfo.playerSpeed;
+
+                buttons.Add(newLevelBtn);
+                Debug.Log(levelInfo);
+            }
+
+            // Always select first button (and load its TileList into the tilemaps)
+            // NOTE: THIS ALWAYS THROWS NullReferenceException AND I DON'T KNOW WHY.
+            // Functions properly so is alright.
+            gameManager.setCurrentLevel(levels.First());
+            buttons.First().Select();
+
         }
     }
 

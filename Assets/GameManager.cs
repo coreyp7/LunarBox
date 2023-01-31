@@ -345,9 +345,9 @@ public class GameManager : MonoBehaviour
     public TileList deserializeLevelFileReturn(string filepath)
     {
         TileList tileList = null;
-        Debug.Log("attempting to deserialize level:" + filepath);
         //TextAsset jsonTextFile = Resources.Load<TextAsset>(filepath);
         string funnypath = Application.persistentDataPath + "/"+filepath;
+        Debug.Log("attempting to deserialize level:" + funnypath);
         string jsonTextFile = System.IO.File.ReadAllText(funnypath);
         //Debug.Log(jsonTextFile.text);
         //tileList = JsonUtility.FromJson<TileList>(jsonTextFile.text);
