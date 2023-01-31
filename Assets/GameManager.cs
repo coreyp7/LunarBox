@@ -234,7 +234,7 @@ public class GameManager : MonoBehaviour
     /// <param name="levelName"></param>
     public void deserializeLevelFile(string levelName)
     {
-        string json = System.IO.File.ReadAllText("Saved_Levels/"+ levelName);
+        string json = System.IO.File.ReadAllText(Application.persistentDataPath + "/" +levelName);
         TileList deserializedTileList = JsonUtility.FromJson<TileList>(json);
 
         loadLevel(deserializedTileList);

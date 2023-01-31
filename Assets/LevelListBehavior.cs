@@ -242,7 +242,7 @@ public class LevelListBehavior : MonoBehaviour
             return;
         }
 
-        gameManager.deserializeLevelFile("Default/level_menu_new_level.txt");
+        gameManager.deserializeLevelFile("default/level_menu_new_level.txt");
 
         //2: make a copy of the default empty level
         TileList newLevelTileList = GameManager.currentlyLoadedLevel;
