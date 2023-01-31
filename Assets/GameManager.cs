@@ -68,10 +68,34 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         string path = Application.persistentDataPath + "/saved";
+        string path2 = Application.persistentDataPath + "/default";
+
         // check that the directory exists, create it if it dont
         if (!Directory.Exists(path))
         {
             Directory.CreateDirectory(path);
+        }
+
+        // if default dir doesn't exist, create it and add the default level.
+        if (!Directory.Exists(path2))
+        {
+            Directory.CreateDirectory(path2);
+            string jsonDefault = Resources.Load<TextAsset>(
+                "Saved_Levels/Default/level_menu_new_level").text;
+
+            string funnypath = Application.persistentDataPath + "/default/level_menu_new_level.txt";
+
+            try
+            {
+                //System.IO.File.WriteAllText("Saved_Levels/level_test.txt", serializedTileJson);
+                //System.IO.File.WriteAllText("Saved_Levels/" + levelName + ".txt", serializedTileJson);
+                System.IO.File.WriteAllText(funnypath, jsonDefault);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.Log(funnypath);
+                Debug.LogError(ex.StackTrace);
+            }
         }
     }
 

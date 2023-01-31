@@ -93,9 +93,12 @@ public class LevelListBehavior : MonoBehaviour
 
         if (levels.Count == 0)
         {
+
+
             TileList placeHolder = gameManager.deserializeLevelFileReturn("default/level_menu_new_level.txt");
+            placeHolder.name = "example empty level";
             gameManager.setCurrentLevel(placeHolder);
-            gameManager.serializeCurrentLevelToFile("new_level");
+            gameManager.serializeCurrentLevelToFile("example empty level");
 
             Button newLevelBtn = Instantiate(levelBtnPrefab, this.transform);
             newLevelBtn.GetComponent<LevelButtonBehavior>().setTileList(placeHolder);
