@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using System.IO;
 using Button = UnityEngine.UI.Button;
 using Cursor = UnityEngine.Cursor;
 
@@ -69,7 +70,16 @@ public class LevelListBehavior : MonoBehaviour
         inTopMenu = false;
         inCreateLevelMenu = false;
 
-        emptyLevel = gameManager.deserializeLevelFileReturn("Saved_Levels/Default/level_menu_new_level.txt");
+        string path = Application.persistentDataPath + "/default";
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+            // todo: get level from resources for the new level tilelist and put it here
+            
+        }else
+        {
+            emptyLevel = gameManager.deserializeLevelFileReturn("default/level_menu_new_level.txt");
+        }
 
 
         buttonsSelectedIndex = 0;
@@ -77,7 +87,7 @@ public class LevelListBehavior : MonoBehaviour
 
         // Get directory of TileLists, and create buttons corresponding to each.
         // Put each button in order in list 'buttons'.
-        List<TileList> levels = gameManager.deserializeLevelsDirectory("Saved_Levels/");
+        List<TileList> levels = gameManager.deserializeLevelsDirectory();
         foreach(TileList levelInfo in levels)
         {
             //Create ui button with prefab, give it level info (TileList)
@@ -101,7 +111,7 @@ public class LevelListBehavior : MonoBehaviour
 
         if(levels.Count == 0)
         {
-            TileList placeHolder = gameManager.deserializeLevelFileReturn("Saved_Levels/Default/level_menu_new_level.txt");
+            TileList placeHolder = gameManager.deserializeLevelFileReturn("default/level_menu_new_level.txt");
             gameManager.setCurrentLevel(placeHolder);
             gameManager.serializeCurrentLevelToFile("new_level");
 

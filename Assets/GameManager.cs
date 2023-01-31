@@ -64,11 +64,15 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private PlayerController playerController;
 
-
     // Start is called before the first frame update
     void Start()
     {
-
+        string path = Application.persistentDataPath + "/saved";
+        // check that the directory exists, create it if it dont
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
     }
 
     // Update is called once per frame
@@ -111,13 +115,17 @@ public class GameManager : MonoBehaviour
         Debug.Log("Tiles in serializedtileJson:" + levelTileList.tiles.Count);
         Debug.Log(serializedTileJson);
 
+        string funnypath = Application.persistentDataPath + "/saved/" + levelName + ".txt";
+
         try
         {
             //System.IO.File.WriteAllText("Saved_Levels/level_test.txt", serializedTileJson);
-            System.IO.File.WriteAllText("Saved_Levels/" + levelName + ".txt", serializedTileJson);
+            //System.IO.File.WriteAllText("Saved_Levels/" + levelName + ".txt", serializedTileJson);
+            System.IO.File.WriteAllText(funnypath, serializedTileJson);
         }
         catch (System.Exception ex)
         {
+            Debug.Log(funnypath);
             Debug.LogError(ex.StackTrace);
         }
     }
@@ -313,9 +321,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     /// <param name="dirPath"> The path to the directory (local unity project).</param>
     /// <returns></returns>
-    public List<TileList> deserializeLevelsDirectory(string dirPath)
+    public List<TileList> deserializeLevelsDirectory()
     {
-        string[] levelFiles = Directory.GetFiles(dirPath);
+
+        string[] levelFiles = Directory.GetFiles(Application.persistentDataPath + "/saved");
         List<TileList> levels = new List<TileList>();
 
         foreach(string levelFile in levelFiles)
@@ -335,8 +344,15 @@ public class GameManager : MonoBehaviour
     /// <returns></returns>
     public TileList deserializeLevelFileReturn(string filepath)
     {
-        string json = System.IO.File.ReadAllText(filepath);
-        TileList tileList = JsonUtility.FromJson<TileList>(json);
+        TileList tileList = null;
+        Debug.Log("attempting to deserialize level:" + filepath);
+        //TextAsset jsonTextFile = Resources.Load<TextAsset>(filepath);
+        string funnypath = Application.persistentDataPath + "/"+filepath;
+        string jsonTextFile = System.IO.File.ReadAllText(funnypath);
+        //Debug.Log(jsonTextFile.text);
+        //tileList = JsonUtility.FromJson<TileList>(jsonTextFile.text);
+        //string json = System.IO.File.ReadAllText(filepath);
+        tileList = JsonUtility.FromJson<TileList>(jsonTextFile);
         return tileList;
     }
 
