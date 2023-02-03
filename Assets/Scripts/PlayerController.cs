@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Animator animator;
 
+    private SpriteRenderer spriteRenderer;
+
 
     // default: 7
     [SerializeField]
@@ -82,6 +84,8 @@ public class PlayerController : MonoBehaviour
         jumpLockoutTime = -1;
 
         horizontalInputLocked = false;
+
+        spriteRenderer = this.GetComponent<SpriteRenderer>();
     }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
 
     // Update is called once per frame
@@ -191,7 +195,16 @@ public class PlayerController : MonoBehaviour
             warpToCheckpoint();
         }
 
-        animator.SetFloat("Speed", rb.velocity.x);
+        if(rb.velocity.x > 0)
+        {
+            //animator.SetBool("WalkingLeft", true);
+            spriteRenderer.flipX = false;
+        } else if(rb.velocity.x < 0)
+        {
+            //animator.SetBool("WalkingLeft", false);
+            spriteRenderer.flipX = true;
+        }
+        animator.SetFloat("Speed", Math.Abs(rb.velocity.x));
     }
 
     public void warpToCheckpoint()
