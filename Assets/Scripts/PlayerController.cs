@@ -17,6 +17,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameManager gameManager;
 
+    [SerializeField]
+    private Animator animator;
+
 
     // default: 7
     [SerializeField]
@@ -187,6 +190,8 @@ public class PlayerController : MonoBehaviour
         {
             warpToCheckpoint();
         }
+
+        animator.SetFloat("Speed", rb.velocity.x);
     }
 
     public void warpToCheckpoint()
